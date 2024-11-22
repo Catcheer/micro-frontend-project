@@ -5,22 +5,34 @@ import { Breadcrumb, Layout, Menu, theme } from 'antd';
 
 import { Outlet } from "react-router-dom";
 import { useNavigate,useLocation } from "react-router-dom";
-// import useCurrentLocation from './hooks/useCurrentLocation.js';
-import useMenu from './hooks/useMenu.jsx'
 
+import {useMenu,useFindOpenKeys} from './hooks/useMenu.jsx'
+import type { MenuProps } from 'antd';
+import { before } from 'node:test';
+type MenuItem = Required<MenuProps>['items'][number];
 const { Header, Content, Sider } = Layout;
 
-let menuItems  = useMenu().menuItems
 
 
 const App: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [current,setCurrent] = useState('/')
+  // let [menuItems,setMenuItems] = useState<MenuItem[]>([])
+  let menuItems:MenuItem[] = useMenu().menuItems
+  
+
+  console.log('menuItems',menuItems)
+
   let path = useLocation().pathname
+
+   let openkeys = useFindOpenKeys(path)
+  
+   let defaultOpenKeys =openkeys.slice(0,openkeys.length-1).map(item=>item.key)
+   let breadList = openkeys.map(item=>{return {title:item.label}})
+
   useEffect(()=>{
-   
     setCurrent(path)
-  },[path])
+  },[])
 
 
   const {
@@ -36,22 +48,22 @@ const App: React.FC = () => {
     navigate(key)
     setCurrent(key)
   }
-console.log('currentcurrentcurrentcurrentcurrent',current)
+
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div className="demo-logo-vertical" />
-        <Menu openKeys={['/procuct']} theme="dark" selectedKeys={[current]} defaultSelectedKeys={['/']} mode="inline" items={menuItems}  onClick={handleOnClickMenu}/>
+        <Menu defaultOpenKeys={defaultOpenKeys} theme="dark" selectedKeys={[current]} defaultSelectedKeys={['/']} mode="inline" items={menuItems}  onClick={handleOnClickMenu}/>
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
+        {/* <Header style={{ padding: 0, background: colorBgContainer }} /> */}
         <Content style={{ margin: '0 16px' }}>
-        <Breadcrumb items={[{ title: 'sample'} ,{title:'test'}]} />
+        <Breadcrumb style={{ padding: '10px 0px' }} items={breadList} />
           <div
             style={{
-              padding: 24,
-              minHeight: 360,
+              padding: '20px 10px',
+              minHeight: 880,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}

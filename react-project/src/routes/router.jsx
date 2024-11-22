@@ -8,6 +8,8 @@ import {
   import Home from '@/pages/home/index.jsx'
   import About from '@/pages/about/index.jsx'
   import ProductPriceManage from '@/pages/product/priceManagement/index.tsx'
+  import ProductImageManage from '@/pages/product/imageManagement/index.tsx'
+  import OrderList from '@/pages/order/list/index.tsx'
 
   const router= createBrowserRouter([
   
@@ -23,6 +25,14 @@ import {
         {
           path: "/productPriceManage",
           element: <ProductPriceManage />,
+        },
+        {
+          path: "/procuctImageManage",
+          element: <ProductImageManage />,
+        },
+        {
+          path: "/orderList",
+          element: <OrderList />,
         },
         {
           path: "/about",
