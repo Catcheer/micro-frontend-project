@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import reactLogo from '@/assets/app-react/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+// import '../../App.css'
 import { useNavigate } from "react-router-dom";
-function App() {
+function Home() {
   const [count, setCount] = useState(0)
   const navigate = useNavigate();
   return (
@@ -29,10 +29,10 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
       <button onClick={() => {
-                navigate('/home')
-            }}>home</button>
+                navigate('/about')
+            }}>about</button>
     </>
   )
 }
 
-export default App
+export default Home
