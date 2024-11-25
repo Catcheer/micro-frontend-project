@@ -32,7 +32,7 @@ const App: React.FC = () => {
 
   useEffect(()=>{
     setCurrent(path)
-  },[])
+  },[path])
 
 
   const {

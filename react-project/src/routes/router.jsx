@@ -3,6 +3,10 @@ import {
     createBrowserRouter,
   RouterProvider,
   } from "react-router-dom";
+  import { ConfigProvider,
+    // theme
+   } from 'antd';
+
   import ErrorPage from "../error-page.jsx";
   import App from '../App.tsx'
   import Home from '@/pages/home/index.jsx'
@@ -48,7 +52,18 @@ import {
 
   export default function MyRoute(){
     return (<> 
-    
+     <ConfigProvider
+      theme={{
+        // algorithm: theme.compactAlgorithm,
+        token: {
+          // colorPrimary: '#00b96b',
+          borderRadius: 1,
+          // colorBgContainer: '#fafafa'
+        },
+        
+      }}
+     >
     <RouterProvider router={router} /> 
+    </ConfigProvider>
 </>)
   }
