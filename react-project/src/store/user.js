@@ -5,7 +5,7 @@ import profileSlice from './profileSlice';
 
 const userReducer = combineReducers({
     preference: perferencesSlice,
-  profile: profileSlice
+    profile: profileSlice
 })
 
 

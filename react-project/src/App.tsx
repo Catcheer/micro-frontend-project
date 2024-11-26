@@ -26,12 +26,18 @@ const App: React.FC = () => {
   let path = useLocation().pathname
 
    let openkeys = useFindOpenKeys(path)
+  let openKeyItems =   openkeys.slice(0,openkeys.length-1).map(item=>item.key)
+
+   let [curOpenKeys,setCurOpenKeys]=useState(openKeyItems)
   
-   let defaultOpenKeys =openkeys.slice(0,openkeys.length-1).map(item=>item.key)
+
    let breadList = openkeys.map(item=>{return {title:item.label}})
 
   useEffect(()=>{
     setCurrent(path)
+    let openkeys = useFindOpenKeys(path)
+    let openKeyItems =   openkeys.slice(0,openkeys.length-1).map(item=>item.key)
+    setCurOpenKeys(openKeyItems)
   },[path])
 
 
@@ -41,20 +47,20 @@ const App: React.FC = () => {
 
   const navigate = useNavigate();
   const handleOnClickMenu =({ item, key, keyPath, domEvent })=>{
-    console.log(item)
-    console.log(key)
-    console.log(keyPath)
-    console.log(domEvent)
+ 
     navigate(key)
     setCurrent(key)
   }
 
+  const handleOnOpenChange = (openKeys)=>{
+    setCurOpenKeys(openKeys)
+  }
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div className="demo-logo-vertical" />
-        <Menu defaultOpenKeys={defaultOpenKeys} theme="dark" selectedKeys={[current]} defaultSelectedKeys={['/']} mode="inline" items={menuItems}  onClick={handleOnClickMenu}/>
+        <Menu defaultOpenKeys={['/']} openKeys={curOpenKeys} theme="dark" selectedKeys={[current]} defaultSelectedKeys={['/']} mode="inline" items={menuItems} onOpenChange={handleOnOpenChange}  onClick={handleOnClickMenu}/>
       </Sider>
       <Layout>
         {/* <Header style={{ padding: 0, background: colorBgContainer }} /> */}

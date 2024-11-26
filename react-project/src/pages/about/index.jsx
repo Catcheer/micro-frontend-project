@@ -7,10 +7,14 @@ import { updateName, updateAge } from "@/store/profileSlice";
 
 import { setColor, changeEmail, changeSms } from "@/store/preferencesSlice";
 
+import {selectSubTest,incrementSub} from '@/store/subTestSlice'
+
 export default function About() {
   let scores = useSelector(selectScore);
   let profile = useSelector((state) => state.user.profile);
   let preferences = useSelector((state) => state.user.preference);
+  let subA = useSelector(selectSubTest)
+  
   let dispatch = useDispatch();
   return (
     <div>
@@ -77,6 +81,15 @@ export default function About() {
         changeSms
       </Button>
       </div>
+      <div style={{ height: "100px" }}></div>
+      <div>{subA}</div>
+      <Button
+        onClick={() => {
+          dispatch(incrementSub(Math.floor(Math.random() * 10 + 1)));
+        }}
+      >
+        incrementSub
+      </Button>
     </div>
   );
 }
