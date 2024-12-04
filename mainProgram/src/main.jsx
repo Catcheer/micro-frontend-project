@@ -42,8 +42,11 @@ registerMicroApps([
     container: '#container',
     activeRule: '/app-vue',
     props: {
-      navTopHight: NAV_TOP_HEIGHT,
-    },
+      listener,
+      changeNavTopHight:(height)=>{
+       store.dispatch(setNavTopHight(height));
+      }
+   },
   },
 
 ]);
