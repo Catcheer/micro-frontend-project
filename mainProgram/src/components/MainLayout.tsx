@@ -9,10 +9,14 @@ type MenuItem = Required<MenuProps>['items'][number];
 
 
 import {useMenu,useFindOpenKeys} from '../hooks/useMenu.jsx'
+import {useSelector} from 'react-redux'
+
+import {selectSetting} from '../store/settingSlice'
 
 const { Header, Content, Sider } = Layout;
 
 export default function MainLayout() {
+  const setting = useSelector(selectSetting)
   const [collapsed, setCollapsed] = useState(false);
   const [current, setCurrent] = useState("/");
   const navigate = useNavigate();
@@ -41,7 +45,7 @@ export default function MainLayout() {
     setCurrent(key);
   };
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ height: `calc(100vh - ${setting.navTopHight}px)` }}>
       <Sider
         collapsible
         collapsed={collapsed}
@@ -66,7 +70,7 @@ export default function MainLayout() {
         <div
             style={{
               padding: '20px 10px',
-              minHeight: 880,
+           
               background: 'white',
             }}
           >

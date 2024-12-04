@@ -11,10 +11,12 @@ import type { MenuProps } from 'antd';
 
 type MenuItem = Required<MenuProps>['items'][number];
 const { Header, Content, Sider } = Layout;
-
+import {selectSetting} from "@/store/settingSlice.js";
+import { useSelector } from "react-redux";
 
 
 const App: React.FC = () => {
+  let setting = useSelector(selectSetting)
   const [collapsed, setCollapsed] = useState(false);
   const [current,setCurrent] = useState('/')
   // let [menuItems,setMenuItems] = useState<MenuItem[]>([])
@@ -57,7 +59,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout style={{ minHeight: `calc(100vh - ${setting?.navTopHight || 0}px)`}}>
       <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div className="demo-logo-vertical" />
         <Menu defaultOpenKeys={['/']} openKeys={curOpenKeys} theme="dark" selectedKeys={[current]} defaultSelectedKeys={['/']} mode="inline" items={menuItems} onOpenChange={handleOnOpenChange}  onClick={handleOnClickMenu}/>
@@ -69,7 +71,7 @@ const App: React.FC = () => {
           <div
             style={{
               padding: '20px 10px',
-              minHeight: 880,
+              // minHeight: 856,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}

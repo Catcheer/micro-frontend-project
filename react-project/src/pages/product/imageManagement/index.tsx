@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector ,useDispatch} from 'react-redux'
 import {Button} from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,useLocation } from 'react-router-dom'
 import {
   selectCount,incremented, decremented 
 } from '../../../store/counterSlice'
@@ -12,6 +12,8 @@ export default function ProductImageManage() {
   const navigator = useNavigate()
   const count = useSelector(selectCount)
   console.log('cout======',count)
+  const location = useLocation();
+    console.log('location----------------',location);
   return (
     <div>
       <h1>reactRedux </h1>

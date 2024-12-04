@@ -1,9 +1,13 @@
 import React,{useState,useEffect} from 'react'
+import { useSelector } from 'react-redux';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 type MenuItem = Required<MenuProps>['items'][number];
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
-
+import {selectSetting} from "../store/settingSlice.js";
+import Logo from '../assets/app-react/react.svg'
+import Profile from '../assets/profile_1.png'
+import './nav.less'
 
 const items: MenuItem[] = [
     {
@@ -26,7 +30,7 @@ const items: MenuItem[] = [
   ];
 function HeaderNav()  {
     const [current, setCurrent] = useState('app-master');
-
+    let setting = useSelector(selectSetting)
     useEffect(()=>{
       let pathName = window.location.pathname
       console.log(pathName)
@@ -43,8 +47,17 @@ function HeaderNav()  {
     setCurrent(e.key);
   };
 
-  return <Menu style={{borderBottom:'0px'}} onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />;
+  return <div className='header-nav' style={{height:setting.navTopHight+'px'}}>
+    <div className='logo_wrap'>
+      <img className='logo_img' src={Logo} alt="" /> <span className='logo_text'>XXXXX系统</span>
+    </div>
+    <Menu  style={{borderBottom:'0px',flex:1,display:'flex',alignItems:'center'}} onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
+    <div className='user_wrap'>
+      <img className='user_img' src={Profile} alt="" />
+    </div>
+  </div>
 }
+
 
 
 export default HeaderNav

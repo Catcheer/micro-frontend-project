@@ -12,6 +12,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+html{
+  background-color: #f5f5f5 !important;
+}
 
 a {
   font-weight: 500;

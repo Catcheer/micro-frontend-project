@@ -2,7 +2,9 @@ import './assets/main.css'
 
 import { createApp, type HtmlHTMLAttributes } from 'vue'
 import { createPinia } from 'pinia'
-
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import App from './App.vue'
 import router from './router'
 
@@ -17,7 +19,7 @@ import {
 // let instance = null
 // let history = null
 
-let app :any
+let appRoot :any
 
 declare global {
     interface Window {
@@ -31,12 +33,18 @@ declare global {
 function render(props:QiankunProps) {
     console.log('props----------------',props)
     const  container  = props.container as HTMLElement
-    app = createApp(App)
-
-    app.use(createPinia())
-    app.use(router)
+    appRoot = createApp(App)
+    window.appRoot= appRoot
+    appRoot.use(createPinia())
+    appRoot.use(ElementPlus)
+    appRoot.use(router)
     
-    app.mount(container?container.querySelector('#app'):'#app')
+    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+        appRoot.component(key, component)
+      }
+
+      appRoot.mount(container?container.querySelector('#app'):'#app')
+    console.log('appRoot-------',appRoot)
     
     if(qiankunWindow.__POWERED_BY_QIANKUN__){
         console.log('子应用render')
@@ -55,7 +63,7 @@ renderWithQiankun({
         console.log('bootstrap')
     },
     unmount() {
-        app.unmount()
+        appRoot.unmount()
     },
     update: function (props: QiankunProps): void | Promise<void> {
         throw new Error('Function not implemented.')
