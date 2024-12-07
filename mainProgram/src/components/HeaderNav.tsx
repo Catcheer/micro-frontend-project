@@ -6,7 +6,11 @@ type MenuItem = Required<MenuProps>['items'][number];
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import {selectSetting} from "../store/settingSlice.js";
 import Logo from '../assets/app-react/react.svg'
-import Profile from '../assets/profile_1.png'
+// import Profile from '../assets/profile_1.png'
+import {
+  GithubOutlined,
+  
+} from '@ant-design/icons';
 import './nav.less'
 
 const items: MenuItem[] = [
@@ -53,7 +57,10 @@ function HeaderNav()  {
     </div>
     <Menu  style={{borderBottom:'0px',flex:1,display:'flex',alignItems:'center'}} onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
     <div className='user_wrap'>
-      <img className='user_img' src={Profile} alt="" />
+      {/* <img className='user_img' src={Profile} alt="" /> */}
+      <a href='https://github.com/Catcheer/micro-frontend-project' target='_blank'>
+      <GithubOutlined style={{fontSize:'24px'}} />
+      </a>
     </div>
   </div>
 }

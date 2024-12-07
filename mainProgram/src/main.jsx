@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import store from "./store/index.js";
 import {setNavTopHight} from "./store/settingSlice.js";
 
+
 const listener = (callback)=>{
   console.log('--------------------', store.getState())
   callback && callback(store.getState())
@@ -21,12 +22,12 @@ console.log(cancelListener)
 const NAV_TOP_HEIGHT = 45;
 store.dispatch(setNavTopHight(NAV_TOP_HEIGHT));
 
-
-
+const VITE_SUBPROGRAM_ENTRY = import.meta.env.VITE_SUBPROGRAM_ENTRY
+console.log('process----------------------------',VITE_SUBPROGRAM_ENTRY)
 registerMicroApps([
   {
     name: 'react-project',
-    entry: '//localhost:9003/app-react',
+    entry: `//${VITE_SUBPROGRAM_ENTRY}:9003/app-react`,
     container: '#container',
     activeRule: '/app-react',
     props: {
@@ -38,7 +39,7 @@ registerMicroApps([
   },
   {
     name: 'vue-project',
-    entry: '//localhost:9004/app-vue',
+    entry: `//${VITE_SUBPROGRAM_ENTRY}:9004//app-vue`,
     container: '#container',
     activeRule: '/app-vue',
     props: {

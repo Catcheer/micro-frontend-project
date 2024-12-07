@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
   const root = process.cwd();
   const env = loadEnv(mode, root);
   let config = {
-   base: "http://localhost:9003/",
+   base: "http://47.96.121.113:9003/",
    build: {
     outDir: 'subProgramReact',
     },

@@ -12,7 +12,7 @@ export default defineConfig((({mode})=>{
   const env = loadEnv(mode, root)
 
   let config ={
-    base: "http://localhost:9004/",
+    base: "http://47.96.121.113:9004/",
     build: {
       outDir: 'subProgramVue',
     },
