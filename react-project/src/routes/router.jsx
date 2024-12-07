@@ -54,7 +54,7 @@ import {
 
   export default function MyRoute(){
     useEffect(()=>{
-      // console.log(window.location.pathname)
+      console.log(window.location.pathname)
       if(window.location.pathname==='/'){
         window.location.href='/app-react'
       }

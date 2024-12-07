@@ -1,6 +1,6 @@
 <template>
-    <div class="common-layout" style="height: 100vh;">
-        <el-container style="height: 100vh;">
+    <div class="common-layout" :style="{height:`calc(100vh - ${navTopHight || 0}px)`}">
+        <el-container :style="{height:`calc(100vh - ${navTopHight || 0}px)`}">
             <el-aside class="aside_menu_wrap" width="200px">
                 <Menu />
             </el-aside>
@@ -18,6 +18,10 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import Menu from '@/components/Menu.vue'
+import { storeToRefs } from 'pinia';
+import {useSetting} from '@/stores/setting'
+let {navTopHight} = storeToRefs(useSetting())
+
 </script>
 
 <style scoped lang="less">

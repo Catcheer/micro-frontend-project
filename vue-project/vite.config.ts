@@ -12,10 +12,12 @@ export default defineConfig((({mode})=>{
   const env = loadEnv(mode, root)
 
   let config ={
-   
-   
+    base: "http://localhost:9004/",
+    build: {
+      outDir: 'subProgramVue',
+    },
     server: {
-      port: 8080,
+      port: 9004,
     },
     output:{
       library:`${env.VITE_APP_NAME}}-[name]`,

@@ -26,7 +26,7 @@ store.dispatch(setNavTopHight(NAV_TOP_HEIGHT));
 registerMicroApps([
   {
     name: 'react-project',
-    entry: '//localhost:3001/app-react',
+    entry: '//localhost:9003/app-react',
     container: '#container',
     activeRule: '/app-react',
     props: {
@@ -38,7 +38,7 @@ registerMicroApps([
   },
   {
     name: 'vue-project',
-    entry: '//localhost:8080',
+    entry: '//localhost:9004/app-vue',
     container: '#container',
     activeRule: '/app-vue',
     props: {

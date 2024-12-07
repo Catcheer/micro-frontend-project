@@ -1,6 +1,6 @@
-import React from "react";
+import React ,{useState} from "react";
 import type { FormProps } from "antd";
-import { Button, Card, Form, Input, Select, Table,Space  } from "antd";
+import { Button, Card, Form, Input, Select, Table,Modal   } from "antd";
 
 
 type FieldType = {
@@ -51,6 +51,18 @@ const columns = [
 ];
 
 export default function ProductPriceManage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+const handleClickAdd = () => {
+  setIsModalOpen(true)
+}
+const handleOk = () => {
+  setIsModalOpen(false);
+};
+
+const handleCancel = () => {
+  setIsModalOpen(false);
+};
+
   return (
     <>
       <Card bordered={false}>
@@ -99,11 +111,17 @@ export default function ProductPriceManage() {
           </Form.Item>
         </Form>
       </Card>
-    
+    <div >
+      <Button type="primary" onClick={handleClickAdd}>新增</Button>
+    </div>
       <div style={{padding:'0px 20px'}}>
       <Table size="middle"  dataSource={dataSource} columns={columns} />
       </div>
-     
+      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
     </>
   );
 }

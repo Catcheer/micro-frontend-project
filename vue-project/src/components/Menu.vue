@@ -1,33 +1,7 @@
 <template>
     <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" :router="true">
 
-        <!-- <el-menu-item index="/">
-            <template #title>
-                <el-icon>
-                    <House />
-                </el-icon>
-                <span>首页</span>
-            </template>
-</el-menu-item>
-<el-sub-menu index="/sys">
-    <template #title>
-                <el-icon>
-                    <location />
-                </el-icon>
-                <span>系统管理</span>
-            </template>
-    <el-menu-item index="/sys/MenuManagement"><span>菜单管理</span></el-menu-item>
-    <el-menu-item index="/sys/DicManagement"><span>字典管理</span></el-menu-item>
-    <el-menu-item index="/sys/LogManagement"><span>日志管理</span></el-menu-item>
-</el-sub-menu>
-<el-menu-item index="/about">
-    <template #title>
-                <el-icon>
-                    <document />
-                </el-icon>
-                <span>关于我们</span>
-            </template>
-</el-menu-item> -->
+        
         <GetMenuList :menuList="menuList" />
 
     </el-menu>
@@ -39,8 +13,8 @@ import { ElMenu, ElMenuItem, ElSubMenu, ElIcon } from 'element-plus';
 
 
 import { useRoute } from 'vue-router'
-
-import useMenu from '@/hooks/useMenu.js'
+//ts-ignore
+import useMenu from '@/hooks/useMenu'
 
 const { menuList } = useMenu()
 console.log(menuList)
@@ -76,9 +50,9 @@ const getMenuItem = (item: any) => {
 }
 
 
-const GetMenuList = (props) => {
+const GetMenuList = (props:any) => {
     console.log('props------', props)
-    return props.menuList.map(item => {
+    return props.menuList.map((item:any) => {
         return getMenuItem(item)
     })
 }
