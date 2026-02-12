@@ -7,12 +7,19 @@ export default defineConfig(({ mode }) => {
   const root = process.cwd();
   const env = loadEnv(mode, root);
   let config = {
-   base: "http://47.96.121.113:9003/",
-   build: {
-    outDir: 'subProgramReact',
+    base: "http://47.96.121.113:9003/",
+    build: {
+      outDir: 'subProgramReact',
     },
     server: {
       port: 9003,
+      proxy: {
+        "/api": {
+          target: "http://localhost:8088",
+          changeOrigin: true,
+          rewrite: (path: string) => path.replace(/^\/api/, ""),
+        },
+      },
     },
     output: {
       library: `${env.VITE_APP_NAME}}-[name]`,

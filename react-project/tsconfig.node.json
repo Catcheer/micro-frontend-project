@@ -1,6 +1,17 @@
 {
   "extends": "@tsconfig/node22/tsconfig.json",
   "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.json",
+    "src/**/*.css",
+    "src/**/*.less",
+    "src/**/*.scss",
+    "src/**/*.sass",
+    "src/**/*.styl",
     "vite.config.*",
     "vitest.config.*",
     "cypress.config.*",
@@ -11,9 +22,18 @@
     "composite": true,
     "noEmit": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "types": ["node"]
+    "types": [
+      "node"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "jsx": "react-jsx",
+    "allowImportingTsExtensions": true
   }
 }
