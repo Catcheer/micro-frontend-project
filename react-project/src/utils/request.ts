@@ -54,4 +54,8 @@ export const post = (url: string, data = {}, params = {}) => {
     return service.post(url, data, { params })
 }
 
+export const del = (url: string, params = {}) => {
+    return service.delete(url, { params })
+}
+
 export default service

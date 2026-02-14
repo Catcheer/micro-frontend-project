@@ -1,4 +1,4 @@
-import { get, post } from '@/utils/request.ts'
+import { get, post, del } from '@/utils/request.ts'
 
 
 
@@ -17,3 +17,16 @@ export const addStudent = (data: any) => {
     })
 }
 
+
+export const editStudent = (data: any) => {
+    return post('/updateStudent', data).then(res => {
+        return res.data
+    })
+}
+
+
+export const deleteStudent = (id: number) => {
+    return del(`/delStudent/${id}`).then(res => {
+        return res.data
+    })
+}

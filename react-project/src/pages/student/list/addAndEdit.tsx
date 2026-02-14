@@ -1,19 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Modal, Form, Input } from 'antd'
 
-import { addStudent } from '@/api/student'
+import { addStudent, editStudent } from '@/api/student'
 
 
 type Props = {
     visible: boolean;
     setVisible: (visible: boolean) => void;
     search: () => void;
+    curRow: Student | null;
 }
 
 export default function AddAndEdit(props: Props) {
-    const { visible, setVisible, search } = props
+    const { visible, setVisible, search, curRow } = props
     const [form] = Form.useForm();
+    useEffect(() => {
+        if (curRow) {
+            form.setFieldsValue(curRow)
+        }
+    }, [curRow])
+
+
+
+
 
 
     const [initValue, setInitValue] = useState({
@@ -27,10 +37,21 @@ export default function AddAndEdit(props: Props) {
     const handleOk = () => {
         console.log('ok')
         console.log(form.getFieldsValue())
-        addStudent(form.getFieldsValue()).then(res => {
-            setVisible(false)
-            search()
-        })
+        if (curRow) {
+            let data = {
+                ...form.getFieldsValue(),
+                id: curRow.id,
+            }
+            editStudent(data).then(res => {
+                setVisible(false)
+                search()
+            })
+        } else {
+            addStudent(form.getFieldsValue()).then(res => {
+                setVisible(false)
+                search()
+            })
+        }
     }
     return (
         <div>

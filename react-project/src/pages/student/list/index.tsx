@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button, Form, Input, Radio } from 'antd'
 
 
-import { getStudentList } from '@/api/student'
+import { getStudentList, deleteStudent } from '@/api/student'
 import usePagination from '@/hooks/usePagination.tsx'
 import AddAndEdit from './addAndEdit.tsx'
 import './index.less'
@@ -21,7 +21,9 @@ const StudentList: React.FC = () => {
     const [tableData, setTableData] = useState([])
     const { pagination, setPagination } = usePagination()
 
+    const [curRow, setCurRow] = useState<Student | null>(null)
 
+    const [addModalvisible, setAddModalvisible] = useState(false)
 
 
 
@@ -29,7 +31,11 @@ const StudentList: React.FC = () => {
         _getStudentList()
     }, [pagination.current, pagination.pageSize])
 
-
+    useEffect(() => {
+        if (!addModalvisible) {
+            setCurRow(null)
+        }
+    }, [addModalvisible])
 
 
     const _getStudentList = () => {
@@ -86,8 +92,34 @@ const StudentList: React.FC = () => {
             dataIndex: 'updateTime',
             key: 'updateTime',
         },
+        {
+            title: '操作',
+            dataIndex: 'operate',
+            key: 'operate',
+            render: (text: any, record: any) => {
+                return (
+                    <div>
+                        <Button type="link" onClick={() => { handleEdit(record) }}>编辑</Button>
+                        <Button type="link" onClick={() => { handleDelete(record) }}>删除</Button>
+                    </div>
+                )
+            }
+        },
     ];
 
+
+    const handleEdit = (record: Student) => {
+        setCurRow(record)
+        console.log(record)
+        setAddModalvisible(true)
+    }
+
+    const handleDelete = (record: any) => {
+        console.log(record)
+        deleteStudent(record.id).then(res => {
+            _getStudentList()
+        })
+    }
 
     const handleSearch = () => {
 
@@ -124,7 +156,7 @@ const StudentList: React.FC = () => {
 
 
 
-    const [addModalvisible, setAddModalvisible] = useState(false)
+
 
 
     const handleAdd = () => {
@@ -160,7 +192,7 @@ const StudentList: React.FC = () => {
                 rowKey="id"
                 pagination={pagination}
             />
-            <AddAndEdit visible={addModalvisible} setVisible={setAddModalvisible} search={handleSearch} />
+            <AddAndEdit visible={addModalvisible} setVisible={setAddModalvisible} search={handleSearch} curRow={curRow} />
         </div>
     )
 }
