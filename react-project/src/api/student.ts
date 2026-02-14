@@ -1,4 +1,4 @@
-import { get } from '@/utils/request.ts'
+import { get, post } from '@/utils/request.ts'
 
 
 
@@ -10,4 +10,10 @@ export const getStudentList = (params: PageParam) => {
     })
 }
 
+
+export const addStudent = (data: any) => {
+    return post('/addStudent', data).then(res => {
+        return res.data
+    })
+}
 

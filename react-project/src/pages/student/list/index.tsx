@@ -1,13 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'antd'
+import { Table, Button, Form, Input, Radio } from 'antd'
 
 
 import { getStudentList } from '@/api/student'
 import usePagination from '@/hooks/usePagination.tsx'
-const StudentList: React.FC = () => {
+import AddAndEdit from './addAndEdit.tsx'
+import './index.less'
 
+
+
+
+
+const StudentList: React.FC = () => {
+    const initSearchParams = {
+        name: '',
+        gender: '',
+        studentNo: ''
+    }
+    const [form] = Form.useForm();
     const [tableData, setTableData] = useState([])
     const { pagination, setPagination } = usePagination()
+
+
+
+
 
     useEffect(() => {
         _getStudentList()
@@ -15,10 +31,13 @@ const StudentList: React.FC = () => {
 
 
 
+
     const _getStudentList = () => {
+        let serchParams = form.getFieldsValue()
         let params: any = {
             page: pagination.current,
-            pageSize: pagination.pageSize
+            pageSize: pagination.pageSize,
+            ...serchParams
         }
         getStudentList(params).then(res => {
             setTableData(res.list)
@@ -70,16 +89,78 @@ const StudentList: React.FC = () => {
     ];
 
 
+    const handleSearch = () => {
 
+        console.log(form.getFieldsValue())
+
+        if (pagination.current === 1) {
+            _getStudentList()
+        } else {
+            // 
+            setPagination({
+                ...pagination,
+                current: 1
+            })
+        }
+
+    }
+
+    const handleReset = () => {
+        form.resetFields()
+
+        if (pagination.current === 1) {
+            _getStudentList()
+        } else {
+            setPagination({
+                ...pagination,
+                current: 1
+            })
+        }
+    }
+
+    const handleOnValuesChange = (changedValues: any, allValues: any) => {
+        console.log(changedValues, allValues)
+    }
+
+
+
+    const [addModalvisible, setAddModalvisible] = useState(false)
+
+
+    const handleAdd = () => {
+        console.log('新增')
+        setAddModalvisible(true)
+    }
 
     return (
         <div>
+            <Form
+                layout="inline"
+                form={form}
+                initialValues={initSearchParams}
+                className='form_container'
+                onValuesChange={handleOnValuesChange}
+            >
+                <Form.Item label="姓名" name="name">
+                    <Input placeholder="请输入姓名" />
+                </Form.Item>
+                <Form.Item label="学号" name="studentNo">
+                    <Input placeholder="请输入学号" />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" onClick={handleSearch} className='form_btn_search'>查询</Button>
+                    <Button onClick={handleReset} className='form_btn_reset'>重置</Button>
+                    <Button onClick={handleAdd} className='form_btn_add'>新增</Button>
+                </Form.Item>
+            </Form>
+
             <Table
                 dataSource={tableData}
                 columns={columns}
                 rowKey="id"
                 pagination={pagination}
             />
+            <AddAndEdit visible={addModalvisible} setVisible={setAddModalvisible} search={handleSearch} />
         </div>
     )
 }
