@@ -1,9 +1,16 @@
 import axios from 'axios'
+import { router } from '@/routes/router'
 
 const service = axios.create({
     baseURL: '/api',
     timeout: 15000,
 })
+
+//axios 设置接口返回的status
+service.defaults.validateStatus = function (status) {
+    return status >= 200 && status < 300 || status === 400
+}
+
 
 // 请求拦截
 service.interceptors.request.use(
@@ -25,16 +32,23 @@ service.interceptors.request.use(
 // 响应拦截
 service.interceptors.response.use(
     res => {
-
         // 统一取 data
         return res.data
 
     },
     error => {
-
         let msg = '网络异常'
 
         if (error.response) {
+            console.log(error.response)
+            if (error.response.data.code === 401) {
+                // 跳转到登录
+                console.log('跳转到登录')
+
+                router.navigate('/login')
+
+
+            }
             msg = error.response.data?.message || msg
         }
 

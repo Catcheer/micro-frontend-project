@@ -10,16 +10,17 @@ import {
   // theme
 } from 'antd';
 
-import ErrorPage from "../error-page.jsx";
+import ErrorPage from "../error-page.js";
 import App from '../App.tsx'
-import Home from '@/pages/home/index.jsx'
-import About from '@/pages/about/index.jsx'
+import Home from '@/pages/home/index.js'
+import About from '@/pages/about/index.js'
 import ProductPriceManage from '@/pages/product/priceManagement/index.tsx'
 import ProductImageManage from '@/pages/product/imageManagement/index.tsx'
 import OrderList from '@/pages/order/list/index.tsx'
 import StudentList from '@/pages/student/list/index.tsx'
+import Login from '@/pages/login/index.tsx'
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
 
   {
     path: "/",
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
       {
         path: "/productPriceManage",

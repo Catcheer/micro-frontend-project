@@ -41,15 +41,15 @@ function Home() {
           </Button>
           <div style={{ height: "10px" }}></div>
           <Button
-        type="primary"
-        onClick={() => {
-          // navigate("app-master/employee");
-          window.location.href='./app-master/employee'
-        }}
-      >
-        跳转到主应用组织架构/员工管理
-      </Button>
-      <div style={{ height: "10px" }}></div>
+            type="primary"
+            onClick={() => {
+              // navigate("app-master/employee");
+              window.location.href = './app-master/employee'
+            }}
+          >
+            跳转到主应用组织架构/员工管理
+          </Button>
+          <div style={{ height: "10px" }}></div>
         </div>
       )}
 

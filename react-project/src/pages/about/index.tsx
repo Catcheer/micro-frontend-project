@@ -7,14 +7,14 @@ import { updateName, updateAge } from "@/store/profileSlice";
 
 import { setColor, changeEmail, changeSms } from "@/store/preferencesSlice";
 
-import {selectSubTest,incrementSub} from '@/store/subTestSlice'
+import { selectSubTest, incrementSub } from '@/store/subTestSlice'
 
 export default function About() {
   let scores = useSelector(selectScore);
   let profile = useSelector((state) => state.user.profile);
   let preferences = useSelector((state) => state.user.preference);
   let subA = useSelector(selectSubTest)
-  
+
   let dispatch = useDispatch();
   return (
     <div>
@@ -60,26 +60,26 @@ export default function About() {
         <div>email:{+preferences.notifications.email}</div>
         <div>sms:{+preferences.notifications.sms}</div>
         <Button
-        onClick={() => {
-          dispatch(setColor());
-        }}
-      >
-        setColor
-      </Button>
-      <Button
-        onClick={() => {
-          dispatch(changeEmail());
-        }}
-      >
-        changeEmail
-      </Button>
-      <Button
-        onClick={() => {
-          dispatch(changeSms());
-        }}
-      >
-        changeSms
-      </Button>
+          onClick={() => {
+            dispatch(setColor());
+          }}
+        >
+          setColor
+        </Button>
+        <Button
+          onClick={() => {
+            dispatch(changeEmail());
+          }}
+        >
+          changeEmail
+        </Button>
+        <Button
+          onClick={() => {
+            dispatch(changeSms());
+          }}
+        >
+          changeSms
+        </Button>
       </div>
       <div style={{ height: "100px" }}></div>
       <div>{subA}</div>
