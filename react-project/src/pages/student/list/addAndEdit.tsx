@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Modal, Form, Input } from 'antd'
+import { Modal, Form, Input, DatePicker } from 'antd'
 
 import { addStudent, editStudent } from '@/api/student'
 
@@ -82,7 +82,7 @@ export default function AddAndEdit(props: Props) {
                         <Input placeholder="请输入班级" />
                     </Form.Item>
                     <Form.Item label="出生年月" name="birthday" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-                        <Input placeholder="请输入出生年月" />
+                        <DatePicker placeholder="请选择出生年月" />
                     </Form.Item>
                 </Form>
             </Modal>

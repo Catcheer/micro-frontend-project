@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Form, Input, Radio } from 'antd'
+import { Table, Button, Form, Input, DatePicker } from 'antd'
 
 
 import { getStudentList, deleteStudent } from '@/api/student'
 import usePagination from '@/hooks/usePagination.tsx'
 import AddAndEdit from './addAndEdit.tsx'
 import './index.less'
+import dayjs from 'dayjs';
 
 
-
+const { RangePicker } = DatePicker;
 
 
 const StudentList: React.FC = () => {
     const initSearchParams = {
         name: '',
         gender: '',
-        studentNo: ''
+        studentNo: '',
+        birthDate: []
     }
     const [form] = Form.useForm();
     const [tableData, setTableData] = useState([])
@@ -43,7 +45,8 @@ const StudentList: React.FC = () => {
         let params: any = {
             page: pagination.current,
             pageSize: pagination.pageSize,
-            ...serchParams
+            ...serchParams,
+            birthDate: serchParams.birthDate?.length === 2 ? serchParams.birthDate.map((item: any) => dayjs(item).format('YYYY-MM-DD')) : []
         }
         getStudentList(params).then(res => {
             setTableData(res.list)
@@ -86,11 +89,25 @@ const StudentList: React.FC = () => {
             title: '创建时间',
             dataIndex: 'createTime',
             key: 'createTime',
+            render: (text: any, record: any) => {
+                return (
+                    <div>
+                        {dayjs(text).format('YYYY-MM-DD HH:mm:ss')}
+                    </div>
+                )
+            }
         },
         {
             title: '更新时间',
             dataIndex: 'updateTime',
             key: 'updateTime',
+            render: (text: any, record: any) => {
+                return (
+                    <div>
+                        {dayjs(text).format('YYYY-MM-DD HH:mm:ss')}
+                    </div>
+                )
+            }
         },
         {
             title: '操作',
@@ -178,6 +195,10 @@ const StudentList: React.FC = () => {
                 </Form.Item>
                 <Form.Item label="学号" name="studentNo">
                     <Input placeholder="请输入学号" />
+                </Form.Item>
+                <Form.Item label="出生日期" name="birthDate">
+                    <RangePicker />
+
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" onClick={handleSearch} className='form_btn_search'>查询</Button>

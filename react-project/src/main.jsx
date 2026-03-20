@@ -1,11 +1,13 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
+import { ConfigProvider } from "antd";
+import zhCN from "antd/locale/zh_CN";
 import MyRoute from "./routes/router";
 
 import { Provider } from "react-redux";
 import store from "@/store/index.js";
-import {setNavTopHight,setIsSubApp} from "@/store/settingSlice.js";
+import { setNavTopHight, setIsSubApp } from "@/store/settingSlice.js";
 
 // import App from './App.tsx'
 
@@ -15,7 +17,7 @@ import {
 } from "vite-plugin-qiankun/dist/helper";
 
 function render(props = {}) {
-  
+
   const container = props.container;
   createRoot(
     container
@@ -23,11 +25,13 @@ function render(props = {}) {
       : document.getElementById("reactroot")
   ).render(
     <StrictMode>
-      <Provider store={store}>
-        
-        <MyRoute />
-       
-      </Provider>
+      <ConfigProvider locale={zhCN}>
+        <Provider store={store}>
+
+          <MyRoute />
+
+        </Provider>
+      </ConfigProvider>
     </StrictMode>
   );
 
@@ -41,15 +45,15 @@ function render(props = {}) {
 renderWithQiankun({
   mount(props) {
     console.log("mounted");
-    let {listener,changeNavTopHight} =props
-    if(listener){
-     listener((mainAppState)=>{
-       console.log("子应用监听到主应用状态变化",mainAppState)
-       store.dispatch(setNavTopHight(mainAppState.setting.navTopHight))
-     })
+    let { listener, changeNavTopHight } = props
+    if (listener) {
+      listener((mainAppState) => {
+        console.log("子应用监听到主应用状态变化", mainAppState)
+        store.dispatch(setNavTopHight(mainAppState.setting.navTopHight))
+      })
     }
-    if(changeNavTopHight){
-      store.subscribe(()=>{
+    if (changeNavTopHight) {
+      store.subscribe(() => {
         let state = store.getState()
         changeNavTopHight(state.setting.navTopHight)
       })

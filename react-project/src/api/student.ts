@@ -4,8 +4,8 @@ import { get, post, del } from '@/utils/request.ts'
 
 
 
-export const getStudentList = (params: PageParam) => {
-    return get('/students', params).then(res => {
+export const getStudentList = (data: PageParam) => {
+    return post('/students', data).then(res => {
         return res.data
     })
 }
