@@ -30,3 +30,10 @@ export const deleteStudent = (id: number) => {
         return res.data
     })
 }
+
+
+export const uploadExcel = (data: FormData) => {
+    return post('/uploadExcel', data).then(res => {
+        return res.data
+    })
+}

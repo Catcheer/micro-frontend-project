@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Form, Input, DatePicker } from 'antd'
+import { Table, Button, Form, Input, DatePicker, message, Upload } from 'antd'
 
 
-import { getStudentList, deleteStudent } from '@/api/student'
+import { getStudentList, deleteStudent, uploadExcel } from '@/api/student'
 import usePagination from '@/hooks/usePagination.tsx'
 import AddAndEdit from './addAndEdit.tsx'
 import './index.less'
@@ -56,6 +56,9 @@ const StudentList: React.FC = () => {
             })
         })
     }
+
+
+
 
 
 
@@ -118,6 +121,7 @@ const StudentList: React.FC = () => {
                     <div>
                         <Button type="link" onClick={() => { handleEdit(record) }}>编辑</Button>
                         <Button type="link" onClick={() => { handleDelete(record) }}>删除</Button>
+
                     </div>
                 )
             }
@@ -171,11 +175,6 @@ const StudentList: React.FC = () => {
         console.log(changedValues, allValues)
     }
 
-
-
-
-
-
     const handleAdd = () => {
         console.log('新增')
         setAddModalvisible(true)
@@ -203,9 +202,36 @@ const StudentList: React.FC = () => {
                 <Form.Item>
                     <Button type="primary" onClick={handleSearch} className='form_btn_search'>查询</Button>
                     <Button onClick={handleReset} className='form_btn_reset'>重置</Button>
-                    <Button onClick={handleAdd} className='form_btn_add'>新增</Button>
+                    <Button onClick={handleAdd} className='form_btn_reset'>新增</Button>
+                    {/* <Button onClick={handleShowUpload} className='form_btn_add'>上传</Button>
+                     */}
+                    <Upload
+                        showUploadList={false}
+                        accept=".xlsx, .xls"
+                        customRequest={async (options: any) => {
+                            const { file, onSuccess, onError } = options;
+                            const formData = new FormData();
+                            formData.append('file', file as any);
+                            try {
+                                const res = await uploadExcel(formData);
+                                onSuccess(res);
+                                message.success('上传成功');
+                                _getStudentList();
+                            } catch (error) {
+                                onError(error);
+                                message.error('上传失败');
+                            }
+                        }}
+                    >
+                        <Button type="link">上传</Button>
+                    </Upload>
                 </Form.Item>
             </Form>
+
+            <div>
+
+
+            </div>
 
             <Table
                 dataSource={tableData}
@@ -214,6 +240,9 @@ const StudentList: React.FC = () => {
                 pagination={pagination}
             />
             <AddAndEdit visible={addModalvisible} setVisible={setAddModalvisible} search={handleSearch} curRow={curRow} />
+
+
+
         </div>
     )
 }

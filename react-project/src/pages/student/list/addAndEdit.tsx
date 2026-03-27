@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Modal, Form, Input, DatePicker } from 'antd'
+import dayjs from "dayjs";
 
 import { addStudent, editStudent } from '@/api/student'
 
@@ -17,7 +18,11 @@ export default function AddAndEdit(props: Props) {
     const [form] = Form.useForm();
     useEffect(() => {
         if (curRow) {
-            form.setFieldsValue(curRow)
+            let data = {
+                ...curRow,
+                birthday: dayjs(curRow.birthday)
+            }
+            form.setFieldsValue(data)
         }
     }, [curRow])
 
@@ -40,6 +45,7 @@ export default function AddAndEdit(props: Props) {
         if (curRow) {
             let data = {
                 ...form.getFieldsValue(),
+                birthday: form.getFieldValue('birthday').format('YYYY-MM-DD'),
                 id: curRow.id,
             }
             editStudent(data).then(res => {
