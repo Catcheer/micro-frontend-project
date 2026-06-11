@@ -37,3 +37,21 @@ export const uploadExcel = (data: FormData) => {
         return res.data
     })
 }
+
+
+export const getExcel = (data: PageParam) => {
+    return post('/students/export', data,{
+        responseType: 'blob'
+    }).then(res => {
+        return res.data
+    })
+}
+
+
+
+export const getClassList = () => {
+    return get('/class/get').then(res => {
+        console.log('res---',res)
+        return res.data
+    })
+}

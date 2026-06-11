@@ -6,6 +6,21 @@ const service = axios.create({
     timeout: 15000,
 })
 
+
+
+const downloadFile = (data: Blob) => { 
+    const blob = new Blob([data])
+    const link = document.createElement('a')
+    link.style.display = 'none'
+    link.href = URL.createObjectURL(blob)
+    link.setAttribute('download', '学生列表.xls')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+}
+
+
 //axios 设置接口返回的status
 service.defaults.validateStatus = function (status) {
     return status >= 200 && status < 300 || status === 400
@@ -32,6 +47,19 @@ service.interceptors.request.use(
 // 响应拦截
 service.interceptors.response.use(
     res => {
+       
+        if(res.headers['content-disposition'] && res.headers['content-disposition'].indexOf('attachment') > -1){
+            const fileName = res.headers['content-disposition'].split('filename=')[1]
+            console.log(res.headers['content-disposition'])
+            console.log(fileName)
+            downloadFile(res.data)
+            return  {data:{
+                code: 200,
+                message: '下载成功'
+            }}
+        }
+
+
         // 统一取 data
         return res.data
 
@@ -61,15 +89,15 @@ service.interceptors.response.use(
 
 // 二次封装
 export const get = (url: string, params = {}) => {
-    return service.get(url, { params })
+    return service.get(url, params )
 }
 
 export const post = (url: string, data = {}, params = {}) => {
-    return service.post(url, data, { params })
+    return service.post(url, data,  params )
 }
 
 export const del = (url: string, params = {}) => {
-    return service.delete(url, { params })
+    return service.delete(url, params )
 }
 
 export default service

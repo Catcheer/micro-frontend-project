@@ -53,7 +53,12 @@ export default function AddAndEdit(props: Props) {
                 search()
             })
         } else {
-            addStudent(form.getFieldsValue()).then(res => {
+            let data = {
+                ...form.getFieldsValue(),
+                birthday: form.getFieldValue('birthday').format('YYYY-MM-DD'),
+               
+            }
+            addStudent(data).then(res => {
                 setVisible(false)
                 search()
             })

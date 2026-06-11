@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Form, Input, DatePicker, message, Upload } from 'antd'
+import { Table, Button, Form, Input, DatePicker, message, Upload, Select } from 'antd'
 
 
-import { getStudentList, deleteStudent, uploadExcel } from '@/api/student'
+import { getStudentList, deleteStudent, uploadExcel ,getExcel  ,getClassList} from '@/api/student'
 import usePagination from '@/hooks/usePagination.tsx'
+import {useStudentClass} from '@/pages/student/hooks/useStudentClass'
+
 import AddAndEdit from './addAndEdit.tsx'
 import './index.less'
 import dayjs from 'dayjs';
+
+
 
 
 const { RangePicker } = DatePicker;
@@ -27,10 +31,23 @@ const StudentList: React.FC = () => {
 
     const [addModalvisible, setAddModalvisible] = useState(false)
 
+    const classList = useStudentClass()||[]
+    
+
+
+
+ useEffect(() => { 
+    
+    getClassList().then(res=>{
+        console.log('getClassList---',res)
+    })
+
+}, [])
 
 
     useEffect(() => {
-        _getStudentList()
+        _getStudentList();
+    
     }, [pagination.current, pagination.pageSize])
 
     useEffect(() => {
@@ -82,6 +99,19 @@ const StudentList: React.FC = () => {
             title: '性别',
             dataIndex: 'gender',
             key: 'gender',
+            render: (text: any, record: any) => {
+                return (
+                    <div>
+                        {Number(text) === 1 ? '男' : '女'}
+                    </div>
+                )
+            }
+        },
+        {
+            title: '班级',
+            dataIndex: 'className',
+            key: 'classId',
+
         },
         {
             title: '出生年月',
@@ -158,6 +188,22 @@ const StudentList: React.FC = () => {
 
     }
 
+
+    const handleExport=()=>{
+
+        let serchParams = form.getFieldsValue()
+        let params: any = {
+            page: pagination.current,
+            pageSize: pagination.pageSize,
+            ...serchParams,
+            birthDate: serchParams.birthDate?.length === 2 ? serchParams.birthDate.map((item: any) => dayjs(item).format('YYYY-MM-DD')) : []
+        }
+        getExcel(params).then(res => {
+           
+        })
+
+    }
+
     const handleReset = () => {
         form.resetFields()
 
@@ -195,6 +241,23 @@ const StudentList: React.FC = () => {
                 <Form.Item label="学号" name="studentNo">
                     <Input placeholder="请输入学号" />
                 </Form.Item>
+                <Form.Item label="班级" name="classId">
+                   <Select placeholder="请选择班级"
+                   style={{ width: "220px" }}
+                   allowClear
+                  
+                   options={
+                            [...classList]
+                        }
+                        fieldNames={{
+                            label: 'className',
+                            value: 'id'
+
+                        }}
+                        > 
+                   </Select>
+                </Form.Item>
+
                 <Form.Item label="出生日期" name="birthDate">
                     <RangePicker />
 
@@ -225,6 +288,7 @@ const StudentList: React.FC = () => {
                     >
                         <Button type="link">上传</Button>
                     </Upload>
+                    <Button type="link" onClick={handleExport}>导出</Button>
                 </Form.Item>
             </Form>
 
