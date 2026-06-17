@@ -4,7 +4,7 @@
 import { Card } from 'antd';
 import FormLogin from './_components/FormLogin.tsx';
 
-// import './index.scss';
+import './index.less';
 
 export default function Login() {
 

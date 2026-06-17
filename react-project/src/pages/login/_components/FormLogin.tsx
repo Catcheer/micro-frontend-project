@@ -80,8 +80,8 @@ const FormLogin: React.FC = () => {
       <Checkbox>Remember me</Checkbox>
     </Form.Item> */}
 
-            <Form.Item label={null}>
-                <Button type="primary" className="w-full" onClick={handleLogin}>
+            <Form.Item className="login_btn_wrap" label={null}>
+                <Button type="primary" className="w-full " onClick={handleLogin}>
                     登录
                 </Button>
             </Form.Item>
