@@ -29,7 +29,6 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-
       qiankun("react-project", {
         useDevMode: true,
       }),

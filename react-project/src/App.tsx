@@ -60,17 +60,17 @@ const App: React.FC = () => {
 
   return (
     <Layout style={{ minHeight: `calc(100vh - ${setting?.navTopHight || 0}px)`}}>
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+      {/* <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div className="demo-logo-vertical" />
         <Menu defaultOpenKeys={['/']} openKeys={curOpenKeys} theme="dark" selectedKeys={[current]} defaultSelectedKeys={['/']} mode="inline" items={menuItems} onOpenChange={handleOnOpenChange}  onClick={handleOnClickMenu}/>
-      </Sider>
+      </Sider> */}
       <Layout>
         {/* <Header style={{ padding: 0, background: colorBgContainer }} /> */}
         <Content style={{ margin: '0 16px' }}>
-        <Breadcrumb style={{ padding: '10px 0px' }} items={breadList} />
+        {/* <Breadcrumb style={{ padding: '10px 0px' }} items={breadList} /> */}
           <div
             style={{
-              padding: '20px 10px',
+              // padding: '20px 10px',
               // minHeight: 856,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
