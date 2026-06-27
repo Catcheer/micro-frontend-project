@@ -234,6 +234,7 @@ const StudentList: React.FC = () => {
                 initialValues={initSearchParams}
                 className='form_container'
                 onValuesChange={handleOnValuesChange}
+                size="small"
             >
                 <Form.Item label="姓名" name="name">
                     <Input placeholder="请输入姓名" />
@@ -243,7 +244,7 @@ const StudentList: React.FC = () => {
                 </Form.Item>
                 <Form.Item label="班级" name="classId">
                    <Select placeholder="请选择班级"
-                   style={{ width: "220px" }}
+                   style={{ width: "200px" }}
                    allowClear
                   
                    options={
@@ -302,6 +303,7 @@ const StudentList: React.FC = () => {
                 columns={columns}
                 rowKey="id"
                 pagination={pagination}
+                size="small"
             />
             <AddAndEdit visible={addModalvisible} setVisible={setAddModalvisible} search={handleSearch} curRow={curRow} />
 

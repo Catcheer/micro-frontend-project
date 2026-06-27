@@ -26,6 +26,15 @@ const FormLogin: React.FC = () => {
         userLogin(loginInfo).then((data) => {
             console.log("Success:", data);
             localStorage.setItem('token', data.data)
+
+            //if the path include of redirect, then redirect to the path after login else to the home page
+            if (window.location.href.includes('redirect')) {
+                let redirectPath = window.location.href.split('redirect=')[1]
+                window.location.href = redirectPath
+                return
+            }
+
+            window.location.href = '/app-react/'
         })
             .catch((error) => {
                 console.error("Error:", error);

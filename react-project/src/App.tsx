@@ -58,12 +58,18 @@ const App: React.FC = () => {
     setCurOpenKeys(openKeys)
   }
 
+  const hideMenu = ()=>{
+    return current === '/login' || current === '/register'
+  }
+
   return (
     <Layout style={{ minHeight: `calc(100vh - ${setting?.navTopHight || 0}px)`}}>
-      {/* <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-        <div className="demo-logo-vertical" />
-        <Menu defaultOpenKeys={['/']} openKeys={curOpenKeys} theme="dark" selectedKeys={[current]} defaultSelectedKeys={['/']} mode="inline" items={menuItems} onOpenChange={handleOnOpenChange}  onClick={handleOnClickMenu}/>
-      </Sider> */}
+      { !hideMenu() && (
+        <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+          <div className="demo-logo-vertical" />
+          <Menu defaultOpenKeys={['/']} openKeys={curOpenKeys} theme="dark" selectedKeys={[current]} defaultSelectedKeys={['/']} mode="inline" items={menuItems} onOpenChange={handleOnOpenChange}  onClick={handleOnClickMenu}/>
+        </Sider>
+      )}
       <Layout>
         {/* <Header style={{ padding: 0, background: colorBgContainer }} /> */}
         <Content style={{ margin: '0 16px' }}>
