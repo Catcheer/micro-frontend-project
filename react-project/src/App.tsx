@@ -64,7 +64,9 @@ const App: React.FC = () => {
     try {
       const data = await userLogout()
       if (data?.code === 200) {
-        localStorage.removeItem('token')
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
+        // localStorage.removeItem('token')
         window.location.href = getLoginRedirectPath('/app-react/login')
         return
       }

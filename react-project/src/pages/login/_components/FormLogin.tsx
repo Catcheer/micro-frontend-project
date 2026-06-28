@@ -12,7 +12,10 @@ type FieldType = {
 type LoginResponse = {
     code: number;
     message?: string;
-    data?: string;
+    data?: {
+        accessToken?: string;
+        refreshToken?: string;
+    };
 };
 
 const FormLogin: React.FC = () => {
@@ -29,7 +32,16 @@ const FormLogin: React.FC = () => {
             })) as LoginResponse;
 
             if (data?.code === 200) {
-                localStorage.setItem("token", data.data ?? "");
+                const authData = data.data
+
+                if (authData?.accessToken) {
+                    localStorage.setItem("accessToken", authData.accessToken);
+                    // localStorage.setItem("token", authData.accessToken);
+                }
+
+                if (authData?.refreshToken) {
+                    localStorage.setItem("refreshToken", authData.refreshToken);
+                }
 
                 const params = new URLSearchParams(window.location.search)
                 const redirect = params.get('redirect')
