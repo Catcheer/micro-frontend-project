@@ -62,6 +62,7 @@ const FormLogin: React.FC = () => {
             <Form.Item<FieldType>
                 label="用户名"
                 name="username"
+                initialValue="zhangsan"
                 rules={[{ required: true, message: "请输入用户名!" }]}
             >
                 <Input />
@@ -70,6 +71,7 @@ const FormLogin: React.FC = () => {
             <Form.Item<FieldType>
                 label="密码"
                 name="password"
+                initialValue="123456"
                 rules={[{ required: true, message: "请输入密码!" }]}
             >
                 <Input.Password />

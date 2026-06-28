@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Form, Input, DatePicker, message, Upload, Select } from 'antd'
+import { Table, Button, Form, Input, DatePicker, message, Upload, Select, Card, Row, Col, Typography } from 'antd'
 
 
 import { getStudentList, deleteStudent, uploadExcel, getExcel } from '@/api/student'
@@ -217,80 +217,90 @@ const StudentList: React.FC = () => {
     }
 
     return (
-        <div className='px-8'>
-           
+        <div className='px-6 py-4'>
+            <div className='mb-6'>
+               
 
-           <div className='mb-8'>
-           <Form
-                layout="inline"
-                form={form}
-                initialValues={initSearchParams}
-                className='form_container '
-                onValuesChange={handleOnValuesChange}
-                size="small"
-                
-            >
-                <Form.Item label="姓名" name="name">
-                    <Input placeholder="请输入姓名" />
-                </Form.Item>
-                <Form.Item label="学号" name="studentNo">
-                    <Input placeholder="请输入学号" />
-                </Form.Item>
-                <Form.Item label="班级" name="classId">
-                    <Select
-                        placeholder="请选择班级"
-                        style={{ width: "200px" }}
-                        allowClear
-                        options={classOptions}
-                    />
-                </Form.Item>
-
-                <Form.Item label="出生日期" name="birthDate">
-                    <RangePicker />
-
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" onClick={handleSearch} className='form_btn_search'>查询</Button>
-                    <Button onClick={handleReset} className='form_btn_reset'>重置</Button>
-                    <Button onClick={handleAdd} className='form_btn_reset'>新增</Button>
-                    {/* <Button onClick={handleShowUpload} className='form_btn_add'>上传</Button>
-                     */}
-                    <Upload
-                        showUploadList={false}
-                        accept=".xlsx, .xls"
-                        customRequest={async (options: any) => {
-                            const { file, onSuccess, onError } = options;
-                            const formData = new FormData();
-                            formData.append('file', file as any);
-                            try {
-                                const res = await uploadExcel(formData);
-                                onSuccess(res);
-                                message.success('上传成功');
-                                _getStudentList();
-                            } catch (error) {
-                                onError(error);
-                                message.error('上传失败');
-                            }
-                        }}
+               
+                    <Form
+                        layout="horizontal"
+                        form={form}
+                        initialValues={initSearchParams}
+                        className='form_container'
+                        onValuesChange={handleOnValuesChange}
+                        size="middle"
                     >
-                        <Button type="link">上传</Button>
-                    </Upload>
-                    <Button type="link" onClick={handleExport}>导出</Button>
-                </Form.Item>
-            </Form>
-           </div>
+                        <Row gutter={[16, 0]}>
+                            <Col xxl={5} xl={6} lg={8} md={12} sm={24}>
+                                <Form.Item label="姓名" name="name">
+                                    <Input placeholder="请输入姓名" />
+                                </Form.Item>
+                            </Col>
+                            <Col xxl={5} xl={6} lg={8} md={12} sm={24}>
+                                <Form.Item label="学号" name="studentNo">
+                                    <Input placeholder="请输入学号" />
+                                </Form.Item>
+                            </Col>
+                            <Col xxl={5} xl={6} lg={8} md={12} sm={24}>
+                                <Form.Item label="班级" name="classId">
+                                    <Select
+                                        placeholder="请选择班级"
+                                        style={{ width: '100%' }}
+                                        allowClear
+                                        options={classOptions}
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col xxl={5} xl={6} lg={8} md={12} sm={24}>
+                                <Form.Item label="出生日期" name="birthDate">
+                                    <RangePicker style={{ width: '100%' }} />
+                                </Form.Item>
+                            </Col>
+                            <Col span={24}>
+                                <div className='flex flex-wrap gap-3 justify-end'>
+                                    <Button type="primary" onClick={handleSearch}>查询</Button>
+                                    <Button onClick={handleReset}>重置</Button>
+                                    <Button onClick={handleAdd}>新增</Button>
+                                    <Upload
+                                        showUploadList={false}
+                                        accept=".xlsx, .xls"
+                                        customRequest={async (options: any) => {
+                                            const { file, onSuccess, onError } = options;
+                                            const formData = new FormData();
+                                            formData.append('file', file as any);
+                                            try {
+                                                const res = await uploadExcel(formData);
+                                                onSuccess(res);
+                                                message.success('上传成功');
+                                                _getStudentList();
+                                            } catch (error) {
+                                                onError(error);
+                                                message.error('上传失败');
+                                            }
+                                        }}
+                                    >
+                                        <Button type="link">上传</Button>
+                                    </Upload>
+                                    <Button type="link" onClick={handleExport}>导出</Button>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Form>
+               
+            </div>
 
-            <Table
-                dataSource={tableData}
-                columns={columns}
-                rowKey="id"
-                pagination={pagination}
-                size="small"
-            />
+          
+                <Table
+                    dataSource={tableData}
+                    columns={columns}
+                    rowKey="id"
+                    pagination={pagination}
+                    size="small"
+                    bordered
+                />
+          
+
             <AddAndEdit visible={addModalvisible} setVisible={setAddModalvisible} search={handleSearch} curRow={curRow} />
-
-
-
         </div>
     )
 }

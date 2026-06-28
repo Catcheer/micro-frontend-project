@@ -94,7 +94,7 @@ const App: React.FC = () => {
             
           </Header>
         )} */}
-        <Content style={{ margin: '0 16px' }}>
+        <Content style={{ }}>
          {
 !hideMenu() && (
    <div className='mb-4 bg-white px-8 flex justify-between items-center' >
