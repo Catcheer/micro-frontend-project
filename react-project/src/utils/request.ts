@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { router } from '@/routes/router'
+import { getLoginRedirectPath } from '@/utils/loginRedirect'
 
 const service = axios.create({
     baseURL: '/api',
@@ -72,8 +73,7 @@ service.interceptors.response.use(
             if (error.response.data.code === 401) {
                 // 跳转到登录，带上当前路由信息
                 console.log('跳转到登录')
-                const redirect = encodeURIComponent(window.location.pathname + window.location.search)
-                router.navigate(`/login?redirect=${redirect}`)
+                router.navigate(getLoginRedirectPath('/login'))
             }
             msg = error.response.data?.message || msg
         }

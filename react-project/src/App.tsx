@@ -8,6 +8,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import { useMenu, useFindOpenKeys } from './hooks/useMenu.jsx'
 import { userLogout } from '@/api/login';
+import { getLoginRedirectPath } from '@/utils/loginRedirect';
 import type { MenuProps } from 'antd';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -64,10 +65,7 @@ const App: React.FC = () => {
       const data = await userLogout()
       if (data?.code === 200) {
         localStorage.removeItem('token')
-        const redirect = encodeURIComponent(window.location.pathname + window.location.search)
-        console.log('redirect----', redirect)
-
-        window.location.href = `/app-react/login?redirect=${redirect}`
+        window.location.href = getLoginRedirectPath('/app-react/login')
         return
       }
       message.error(data?.message || '退出登录失败')
