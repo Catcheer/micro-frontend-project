@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Input, message } from "antd";
+import MD5 from "crypto-js/md5";
 
 import { userLogin } from "@/api/login";
 
@@ -22,7 +23,10 @@ const FormLogin: React.FC = () => {
         try {
             const values = await form.validateFields();
             setLoading(true);
-            const data = (await userLogin(values)) as LoginResponse;
+            const data = (await userLogin({
+                ...values,
+                password: MD5(values.password).toString(),
+            })) as LoginResponse;
 
             if (data?.code === 200) {
                 localStorage.setItem("token", data.data ?? "");
