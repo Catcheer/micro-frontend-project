@@ -21,7 +21,7 @@ type Props = {
 export default function AddAndEdit(props: Props) {
     const { visible, setVisible, search, curRow } = props
     const [form] = Form.useForm();
-    const classList = useStudentClass() || []
+    const classOptions = useStudentClass() || []
 
     useEffect(() => {
         if (!visible) {
@@ -33,13 +33,13 @@ export default function AddAndEdit(props: Props) {
                 studentNo: curRow.studentNo,
                 phone: curRow.phone,
                 gender: curRow.gender != null ? Number(curRow.gender) : undefined,
-                classId: curRow.classId,
+                classId: curRow.classId != null ? Number(curRow.classId) : undefined,
                 birthday: curRow.birthday ? dayjs(curRow.birthday) : undefined,
             })
         } else {
             form.resetFields()
         }
-    }, [visible, curRow, form])
+    }, [visible, curRow, form, classOptions])
 
     const handleCancel = () => {
         setVisible(false)
@@ -115,11 +115,7 @@ export default function AddAndEdit(props: Props) {
                     <Form.Item label="班级" name="classId" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
                         <Select
                             placeholder="请选择班级"
-                            options={[...classList]}
-                            fieldNames={{
-                                label: 'className',
-                                value: 'id',
-                            }}
+                            options={classOptions}
                         />
                     </Form.Item>
                     <Form.Item label="出生年月" name="birthday" labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>

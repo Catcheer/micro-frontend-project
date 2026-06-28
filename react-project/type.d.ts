@@ -22,6 +22,12 @@ interface Student {
     gender: string,
     birthday: string,
     classId: number,
+    className?: string,
     createTime: string,
     updateTime: string
+}
+
+interface ClassItem {
+    id: number,
+    className: string,
 }

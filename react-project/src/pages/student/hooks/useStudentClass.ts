@@ -1,21 +1,26 @@
-
-
 import { useState, useEffect } from 'react'
 
-import { getClassList} from '@/api/student'
+import { getClassList } from '@/api/student'
 
+export type ClassOption = {
+    label: string
+    value: number
+}
 
-export const useStudentClass = () => { 
+export const useStudentClass = () => {
+    const [classOptions, setClassOptions] = useState<ClassOption[]>([])
 
-    const [classList, setClassList] = useState([])
-    useEffect(() => { 
-        getClassList().then(data => {
-            console.log(data)
-            setClassList(data)
+    useEffect(() => {
+        getClassList().then((data) => {
+            const list = Array.isArray(data) ? data : []
+            setClassOptions(
+                list.map((item: ClassItem) => ({
+                    label: item.className,
+                    value: item.id,
+                }))
+            )
         })
     }, [])
 
-    return classList
-
-
+    return classOptions
 }

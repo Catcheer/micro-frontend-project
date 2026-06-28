@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button, Form, Input, DatePicker, message, Upload, Select } from 'antd'
 
 
-import { getStudentList, deleteStudent, uploadExcel ,getExcel  ,getClassList} from '@/api/student'
+import { getStudentList, deleteStudent, uploadExcel, getExcel } from '@/api/student'
 import usePagination from '@/hooks/usePagination.tsx'
 import {useStudentClass} from '@/pages/student/hooks/useStudentClass'
 
@@ -31,19 +31,9 @@ const StudentList: React.FC = () => {
 
     const [addModalvisible, setAddModalvisible] = useState(false)
 
-    const classList = useStudentClass()||[]
-    
+    const classOptions = useStudentClass() || []
 
-
-
- useEffect(() => { 
-    
-    getClassList().then(res=>{
-        console.log('getClassList---',res)
-    })
-
-}, [])
-
+    console.log('classOptions------',classOptions)
 
     useEffect(() => {
         _getStudentList();
@@ -243,20 +233,12 @@ const StudentList: React.FC = () => {
                     <Input placeholder="请输入学号" />
                 </Form.Item>
                 <Form.Item label="班级" name="classId">
-                   <Select placeholder="请选择班级"
-                   style={{ width: "200px" }}
-                   allowClear
-                  
-                   options={
-                            [...classList]
-                        }
-                        fieldNames={{
-                            label: 'className',
-                            value: 'id'
-
-                        }}
-                        > 
-                   </Select>
+                    <Select
+                        placeholder="请选择班级"
+                        style={{ width: "200px" }}
+                        allowClear
+                        options={classOptions}
+                    />
                 </Form.Item>
 
                 <Form.Item label="出生日期" name="birthDate">
