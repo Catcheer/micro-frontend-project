@@ -16,34 +16,34 @@ const menuList = [
     icon: <PieChartOutlined />,
   },
 
-  {
-    label: '商品中心',
-    key: '/procuct',
-    icon: <UserOutlined />,
-    children: [
+  // {
+  //   label: '商品中心',
+  //   key: '/procuct',
+  //   icon: <UserOutlined />,
+  //   children: [
 
-      {
-        label: '价格管理',
-        key: '/productPriceManage',
-      },
-      {
-        label: '图片管理',
-        key: '/procuctImageManage',
-      },
+  //     {
+  //       label: '价格管理',
+  //       key: '/productPriceManage',
+  //     },
+  //     {
+  //       label: '图片管理',
+  //       key: '/procuctImageManage',
+  //     },
 
-    ]
-  },
-  {
-    label: '订单管理',
-    key: '/order',
-    icon: <TeamOutlined />,
-    children: [
-      {
-        label: '订单列表',
-        key: '/orderList',
-      }
-    ]
-  },
+  //   ]
+  // },
+  // {
+  //   label: '订单管理',
+  //   key: '/order',
+  //   icon: <TeamOutlined />,
+  //   children: [
+  //     {
+  //       label: '订单列表',
+  //       key: '/orderList',
+  //     }
+  //   ]
+  // },
   {
     label: '学生管理',
     key: '/student',
@@ -55,11 +55,11 @@ const menuList = [
       }
     ]
   },
-  {
-    label: '关于我们',
-    key: '/about',
-    icon: <DesktopOutlined />,
-  },
+  // {
+  //   label: '关于我们',
+  //   key: '/about',
+  //   icon: <DesktopOutlined />,
+  // },
 
 ]
 

@@ -217,14 +217,18 @@ const StudentList: React.FC = () => {
     }
 
     return (
-        <div>
-            <Form
+        <div className='px-8'>
+           
+
+           <div className='mb-8'>
+           <Form
                 layout="inline"
                 form={form}
                 initialValues={initSearchParams}
-                className='form_container'
+                className='form_container '
                 onValuesChange={handleOnValuesChange}
                 size="small"
+                
             >
                 <Form.Item label="姓名" name="name">
                     <Input placeholder="请输入姓名" />
@@ -274,11 +278,7 @@ const StudentList: React.FC = () => {
                     <Button type="link" onClick={handleExport}>导出</Button>
                 </Form.Item>
             </Form>
-
-            <div>
-
-
-            </div>
+           </div>
 
             <Table
                 dataSource={tableData}

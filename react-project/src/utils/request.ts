@@ -72,6 +72,7 @@ service.interceptors.response.use(
             if (error.response.data.code === 401) {
                 // 跳转到登录
                 console.log('跳转到登录')
+                //  const redirect = encodeURIComponent(window.location.pathname + window.location.search)
 
                 router.navigate('/login')
 
