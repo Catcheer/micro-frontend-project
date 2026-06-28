@@ -1,88 +1,74 @@
-import React from "react";
-import type { FormProps } from "antd";
-import { Button, Form, Input } from "antd";
+import React, { useState } from "react";
+import { Button, Form, Input, message } from "antd";
 
 import { userLogin } from "@/api/login";
 
+type FieldType = {
+    username: string;
+    password: string;
+};
+
+type LoginResponse = {
+    code: number;
+    message?: string;
+    data?: string;
+};
+
 const FormLogin: React.FC = () => {
-    type FieldType = {
-        username: string;
-        password: string;
-    };
+    const [form] = Form.useForm<FieldType>();
+    const [loading, setLoading] = useState(false);
 
-    const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-        console.log("Success:", values);
-    };
+    const handleLogin = async () => {
+        try {
+            const values = await form.validateFields();
+            setLoading(true);
+            const data = (await userLogin(values)) as LoginResponse;
 
-    const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-        errorInfo
-    ) => {
-        console.log("Failed:", errorInfo);
-    };
+            if (data?.code === 200) {
+                localStorage.setItem("token", data.data ?? "");
 
-    const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        console.log("Login button clicked", loginInfo);
-        userLogin(loginInfo).then((data) => {
-            console.log("Success:", data);
-            localStorage.setItem('token', data.data)
+                if (window.location.href.includes("redirect")) {
+                    const redirectPath =
+                        window.location.href.split("redirect=")[1];
+                    window.location.href = redirectPath;
+                    return;
+                }
 
-            //if the path include of redirect, then redirect to the path after login else to the home page
-            if (window.location.href.includes('redirect')) {
-                let redirectPath = window.location.href.split('redirect=')[1]
-                window.location.href = redirectPath
-                return
+                window.location.href = "/app-react/";
+                return;
             }
 
-            window.location.href = '/app-react/'
-        })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
+            message.error(data?.message || "登录失败");
+        } catch (error) {
+            if (typeof error === "string") {
+                message.error(error);
+            }
+        } finally {
+            setLoading(false);
+        }
     };
-
-    const [loginInfo, setLoginInfo] = React.useState<FieldType>({
-        username: "",
-        password: "",
-    });
-
-    function handleChange<T extends keyof FieldType>(field: T) {
-        return (e: React.ChangeEvent<HTMLInputElement>) => {
-            setLoginInfo(prev => ({
-                ...prev,
-                [field]: e.target.value,
-            }));
-        };
-    }
 
     return (
         <Form
+            form={form}
             size={"large"}
             layout={"vertical"}
-            initialValues={{}}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             autoComplete="off"
         >
             <Form.Item<FieldType>
                 label="用户名"
                 name="username"
-                rules={[{ required: true, message: "Please input your username!" }]}
+                rules={[{ required: true, message: "请输入用户名!" }]}
             >
-                <Input value={loginInfo.username}
-                    onChange={handleChange("username")} />
-
+                <Input />
             </Form.Item>
 
             <Form.Item<FieldType>
                 label="密码"
                 name="password"
-                rules={[{ required: true, message: "Please input your password!" }]}
+                rules={[{ required: true, message: "请输入密码!" }]}
             >
-                <Input.Password
-                    value={loginInfo.password}
-                    onChange={handleChange("password")} />
-
+                <Input.Password />
             </Form.Item>
 
             {/* <Form.Item<FieldType> name="remember" valuePropName="checked" label={null}>
@@ -90,7 +76,12 @@ const FormLogin: React.FC = () => {
     </Form.Item> */}
 
             <Form.Item label={null}>
-                <Button type="primary" className="w-full" onClick={handleLogin}>
+                <Button
+                    type="primary"
+                    className="w-full"
+                    loading={loading}
+                    onClick={handleLogin}
+                >
                     登录
                 </Button>
             </Form.Item>
