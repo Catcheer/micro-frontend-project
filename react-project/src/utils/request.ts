@@ -70,13 +70,10 @@ service.interceptors.response.use(
         if (error.response) {
             console.log(error.response)
             if (error.response.data.code === 401) {
-                // 跳转到登录
+                // 跳转到登录，带上当前路由信息
                 console.log('跳转到登录')
-                //  const redirect = encodeURIComponent(window.location.pathname + window.location.search)
-
-                router.navigate('/login')
-
-
+                const redirect = encodeURIComponent(window.location.pathname + window.location.search)
+                router.navigate(`/login?redirect=${redirect}`)
             }
             msg = error.response.data?.message || msg
         }

@@ -64,15 +64,14 @@ const App: React.FC = () => {
       const data = await userLogout()
       if (data?.code === 200) {
         localStorage.removeItem('token')
-        // let pathName = window.location.pathname.split('app-react')[1] || ''
-        // console.log('pathName---', pathName)
-        // const redirect = encodeURIComponent(pathName + window.location.search)
-        window.location.href = `/app-react/login`
+        const redirect = encodeURIComponent(window.location.pathname + window.location.search)
+        console.log('redirect----', redirect)
+
+        window.location.href = `/app-react/login?redirect=${redirect}`
         return
       }
       message.error(data?.message || '退出登录失败')
     } catch (error) {
-      // console.error('退出登录失败', error)
       message.error('退出登录失败')
     }
   }

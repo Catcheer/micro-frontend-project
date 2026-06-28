@@ -31,16 +31,12 @@ const FormLogin: React.FC = () => {
             if (data?.code === 200) {
                 localStorage.setItem("token", data.data ?? "");
 
-                // if (window.location.href.includes("redirect")) {
-                //     const redirectPath =
-                //         window.location.href.split("redirect=")[1];
-
-                //         console.log("redirectPath---", redirectPath);
-                        
-
-                //     window.location.href = redirectPath;
-                //     return;
-                // }
+                const params = new URLSearchParams(window.location.search)
+                const redirect = params.get('redirect')
+                if (redirect) {
+                    window.location.href = decodeURIComponent(redirect)
+                    return;
+                }
 
                 window.location.href = "/app-react/";
                 return;
