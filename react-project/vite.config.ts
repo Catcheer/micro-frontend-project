@@ -7,16 +7,16 @@ export default defineConfig(({ mode }) => {
   const root = process.cwd();
   const env = loadEnv(mode, root);
   let config = {
-    base: "http://47.96.121.113:9003/",
+    base: "http://47.96.121.113:9006/",
     build: {
-      outDir: 'subProgramReact',
+      outDir: 'studentmanage',
     },
     server: {
       port: 9003,
       proxy: {
         "/api": {
-          // target: "http://47.96.121.113:8088",
-          target: "http://localhost:8088",
+          target: "http://47.96.121.113:8088",
+          // target: "http://localhost:8088",
           changeOrigin: true,
           rewrite: (path: string) => path.replace(/^\/api/, ""),
         },
