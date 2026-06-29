@@ -4,7 +4,7 @@ import { Table, Button, Form, Input, DatePicker, message, Upload, Select, Card, 
 
 import { getStudentList, deleteStudent, uploadExcel, getExcel } from '@/api/student'
 import usePagination from '@/hooks/usePagination.tsx'
-import {useStudentClass} from '@/pages/student/hooks/useStudentClass'
+import { useStudentClass } from '@/pages/student/hooks/useStudentClass'
 
 import AddAndEdit from './addAndEdit.tsx'
 import './index.less'
@@ -34,11 +34,11 @@ const StudentList: React.FC = () => {
 
     const classOptions = useStudentClass() || []
 
-    console.log('classOptions------',classOptions)
+    console.log('classOptions------', classOptions)
 
     useEffect(() => {
         _getStudentList();
-    
+
     }, [pagination.current, pagination.pageSize])
 
     useEffect(() => {
@@ -140,7 +140,7 @@ const StudentList: React.FC = () => {
             render: (text: any, record: any) => {
                 return (
                     <div>
-                        <Button type="link" onClick={() => { handleEdit(record) }}>编辑</Button>
+                        <PermissionButton permission="student:update" type="link" onClick={() => { handleEdit(record) }}>编辑</PermissionButton>
                         <PermissionButton type="link" permission="student:delete" onClick={() => { handleDelete(record) }}>删除</PermissionButton>
 
                     </div>
@@ -180,7 +180,7 @@ const StudentList: React.FC = () => {
     }
 
 
-    const handleExport=()=>{
+    const handleExport = () => {
 
         let serchParams = form.getFieldsValue()
         let params: any = {
@@ -190,7 +190,7 @@ const StudentList: React.FC = () => {
             birthDate: serchParams.birthDate?.length === 2 ? serchParams.birthDate.map((item: any) => dayjs(item).format('YYYY-MM-DD')) : []
         }
         getExcel(params).then(res => {
-           
+
         })
 
     }
@@ -220,86 +220,86 @@ const StudentList: React.FC = () => {
     return (
         <div className='px-6 py-4'>
             <div className='mb-6'>
-               
 
-               
-                    <Form
-                        layout="horizontal"
-                        form={form}
-                        initialValues={initSearchParams}
-                        className='form_container'
-                        onValuesChange={handleOnValuesChange}
-                        size="middle"
-                    >
-                        <Row gutter={[16, 0]}>
-                            <Col xxl={5} xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item label="姓名" name="name">
-                                    <Input placeholder="请输入姓名" />
-                                </Form.Item>
-                            </Col>
-                            <Col xxl={5} xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item label="学号" name="studentNo">
-                                    <Input placeholder="请输入学号" />
-                                </Form.Item>
-                            </Col>
-                            <Col xxl={5} xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item label="班级" name="classId">
-                                    <Select
-                                        placeholder="请选择班级"
-                                        style={{ width: '100%' }}
-                                        allowClear
-                                        options={classOptions}
-                                    />
-                                </Form.Item>
-                            </Col>
-                            <Col xxl={5} xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item label="出生日期" name="birthDate">
-                                    <RangePicker style={{ width: '100%' }} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={24}>
-                                <div className='flex flex-wrap gap-3 justify-end'>
-                                    <Button type="primary" onClick={handleSearch}>查询</Button>
-                                    <Button onClick={handleReset}>重置</Button>
-                                    <PermissionButton permission="student:add" onClick={handleAdd}>新增</PermissionButton>
-                                    <Upload
-                                        showUploadList={false}
-                                        accept=".xlsx, .xls"
-                                        customRequest={async (options: any) => {
-                                            const { file, onSuccess, onError } = options;
-                                            const formData = new FormData();
-                                            formData.append('file', file as any);
-                                            try {
-                                                const res = await uploadExcel(formData);
-                                                onSuccess(res);
-                                                message.success('上传成功');
-                                                _getStudentList();
-                                            } catch (error) {
-                                                onError(error);
-                                                message.error('上传失败');
-                                            }
-                                        }}
-                                    >
-                                        <Button type="link">上传</Button>
-                                    </Upload>
-                                    <Button type="link" onClick={handleExport}>导出</Button>
-                                </div>
-                            </Col>
-                        </Row>
-                    </Form>
-               
+
+
+                <Form
+                    layout="horizontal"
+                    form={form}
+                    initialValues={initSearchParams}
+                    className='form_container'
+                    onValuesChange={handleOnValuesChange}
+                    size="middle"
+                >
+                    <Row gutter={[16, 0]}>
+                        <Col xxl={5} xl={6} lg={8} md={12} sm={24}>
+                            <Form.Item label="姓名" name="name">
+                                <Input placeholder="请输入姓名" />
+                            </Form.Item>
+                        </Col>
+                        <Col xxl={5} xl={6} lg={8} md={12} sm={24}>
+                            <Form.Item label="学号" name="studentNo">
+                                <Input placeholder="请输入学号" />
+                            </Form.Item>
+                        </Col>
+                        <Col xxl={5} xl={6} lg={8} md={12} sm={24}>
+                            <Form.Item label="班级" name="classId">
+                                <Select
+                                    placeholder="请选择班级"
+                                    style={{ width: '100%' }}
+                                    allowClear
+                                    options={classOptions}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col xxl={5} xl={6} lg={8} md={12} sm={24}>
+                            <Form.Item label="出生日期" name="birthDate">
+                                <RangePicker style={{ width: '100%' }} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <div className='flex flex-wrap gap-3 justify-end'>
+                                <Button type="primary" onClick={handleSearch}>查询</Button>
+                                <Button onClick={handleReset}>重置</Button>
+                                <PermissionButton permission="student:add" onClick={handleAdd}>新增</PermissionButton>
+                                <Upload
+                                    showUploadList={false}
+                                    accept=".xlsx, .xls"
+                                    customRequest={async (options: any) => {
+                                        const { file, onSuccess, onError } = options;
+                                        const formData = new FormData();
+                                        formData.append('file', file as any);
+                                        try {
+                                            const res = await uploadExcel(formData);
+                                            onSuccess(res);
+                                            message.success('上传成功');
+                                            _getStudentList();
+                                        } catch (error) {
+                                            onError(error);
+                                            message.error('上传失败');
+                                        }
+                                    }}
+                                >
+                                    <PermissionButton permission="sys:upload" type="link">上传</PermissionButton>
+                                </Upload>
+                                <PermissionButton permission="sys:export" type="link" onClick={handleExport}>导出</PermissionButton>
+                            </div>
+                        </Col>
+                    </Row>
+                </Form>
+
             </div>
 
-          
-                <Table
-                    dataSource={tableData}
-                    columns={columns}
-                    rowKey="id"
-                    pagination={pagination}
-                    size="small"
-                    bordered
-                />
-          
+
+            <Table
+                dataSource={tableData}
+                columns={columns}
+                rowKey="id"
+                pagination={pagination}
+                size="small"
+                bordered
+            />
+
 
             <AddAndEdit visible={addModalvisible} setVisible={setAddModalvisible} search={handleSearch} curRow={curRow} />
         </div>

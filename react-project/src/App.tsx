@@ -15,11 +15,15 @@ import type { MenuProps } from 'antd';
 type MenuItem = Required<MenuProps>['items'][number];
 const { Header, Content, Sider } = Layout;
 import { selectSetting } from "@/store/settingSlice.js";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { clearAuth, selectUser } from "@/store/authSlice";
 
 
 const App: React.FC = () => {
   let setting = useSelector(selectSetting)
+  const dispatch = useDispatch()
+  const authUser = useSelector(selectUser)
+  const username = authUser?.nickname || authUser?.username || '用户';
   const [collapsed, setCollapsed] = useState(false);
   const [current, setCurrent] = useState('/')
   // let [menuItems,setMenuItems] = useState<MenuItem[]>([])
@@ -45,41 +49,11 @@ const App: React.FC = () => {
     setCurOpenKeys(openKeyItems)
   }, [path])
 
-  const [username, setUsername] = useState('用户');
-
-  useEffect(() => {
-    const loadUsername = () => {
-      try {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-          const userObj = JSON.parse(storedUser);
-          setUsername(userObj.nickname || userObj.username || '用户');
-        } else {
-          setUsername('用户');
-        }
-      } catch (e) {
-        console.error('Failed to parse user info', e);
-        setUsername('用户');
-      }
-    };
-
-    loadUsername();
-    window.addEventListener('auth-change', loadUsername);
-    return () => {
-      window.removeEventListener('auth-change', loadUsername);
-    };
-  }, []);
-
   const handleLogout = async () => {
     try {
       const data = await userLogout()
       if (data?.code === 200) {
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
-        localStorage.removeItem('user')
-        localStorage.removeItem('roles')
-        localStorage.removeItem('permissions')
-        window.dispatchEvent(new Event('auth-change'))
+        dispatch(clearAuth())
         window.location.href = getLoginRedirectPath('/app-react/login')
         return
       }

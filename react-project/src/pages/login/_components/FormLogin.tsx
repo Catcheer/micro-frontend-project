@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Button, Form, Input, message } from "antd";
 import MD5 from "crypto-js/md5";
+import { useDispatch } from "react-redux";
+import { setLoginInfo } from "@/store/authSlice";
 
 import { userLogin } from "@/api/login";
 
@@ -28,6 +30,7 @@ type LoginResponse = {
 const FormLogin: React.FC = () => {
     const [form] = Form.useForm<FieldType>();
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
 
     const handleLogin = async () => {
         try {
@@ -42,28 +45,15 @@ const FormLogin: React.FC = () => {
                 const authData = data.data
                 console.log('authData', JSON.stringify(authData, null, 3))
 
-                if (authData?.accessToken) {
-                    localStorage.setItem("accessToken", authData.accessToken);
-                    // localStorage.setItem("token", authData.accessToken);
+                if (authData?.accessToken && authData?.refreshToken && authData?.user) {
+                    dispatch(setLoginInfo({
+                        accessToken: authData.accessToken,
+                        refreshToken: authData.refreshToken,
+                        user: authData.user,
+                        roles: authData.roles || [],
+                        permissions: authData.permissions || [],
+                    }));
                 }
-
-                if (authData?.refreshToken) {
-                    localStorage.setItem("refreshToken", authData.refreshToken);
-                }
-
-                if (authData?.user) {
-                    localStorage.setItem("user", JSON.stringify(authData.user));
-                }
-
-                if (authData?.roles) {
-                    localStorage.setItem("roles", JSON.stringify(authData.roles));
-                }
-
-                if (authData?.permissions) {
-                    localStorage.setItem("permissions", JSON.stringify(authData.permissions));
-                }
-
-                window.dispatchEvent(new Event("auth-change"));
 
                 const params = new URLSearchParams(window.location.search)
                 const redirect = params.get('redirect')
@@ -96,7 +86,7 @@ const FormLogin: React.FC = () => {
             <Form.Item<FieldType>
                 label="用户名"
                 name="username"
-                initialValue="zhangsan"
+                initialValue="admin"
                 rules={[{ required: true, message: "请输入用户名!" }]}
             >
                 <Input />

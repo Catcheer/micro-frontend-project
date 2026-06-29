@@ -1,6 +1,8 @@
 import axios, { type AxiosRequestConfig } from 'axios'
 import { router } from '@/routes/router'
 import { getLoginRedirectPath } from '@/utils/loginRedirect'
+import store from '@/store'
+import { clearAuth } from '@/store/authSlice'
 
 const service = axios.create({
     baseURL: '/api',
@@ -38,13 +40,7 @@ const setAuthTokens = (tokens: { accessToken: string; refreshToken?: string }) =
 }
 
 const clearAuthTokens = () => {
-    localStorage.removeItem(ACCESS_TOKEN_KEY)
-    localStorage.removeItem(REFRESH_TOKEN_KEY)
-    localStorage.removeItem(LEGACY_TOKEN_KEY)
-    localStorage.removeItem('user')
-    localStorage.removeItem('roles')
-    localStorage.removeItem('permissions')
-    window.dispatchEvent(new Event('auth-change'))
+    store.dispatch(clearAuth())
 }
 
 const redirectToLogin = () => {

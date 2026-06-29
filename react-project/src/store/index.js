@@ -3,6 +3,7 @@ import counterSlice from './counterSlice'
 import scoreSlice from './score'
 import userReducer from './user'
 import settingSlice from './settingSlice'
+import authReducer from './authSlice'
 
 
 
@@ -10,7 +11,8 @@ const rootReducer = combineSlices({
   counter: counterSlice,
   score: scoreSlice,
   user:userReducer,
-  setting:settingSlice
+  setting:settingSlice,
+  auth:authReducer
 })
 
 

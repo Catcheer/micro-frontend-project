@@ -1,35 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { selectPermissions, selectRoles } from '@/store/authSlice';
 
 export function usePermissions() {
-    const [permissions, setPermissions] = useState<string[]>([]);
-    const [roles, setRoles] = useState<string[]>([]);
-
-    useEffect(() => {
-        const handleAuthChange = () => {
-            try {
-                const storedPermissions = localStorage.getItem('permissions');
-                const storedRoles = localStorage.getItem('roles');
-                setPermissions(storedPermissions ? JSON.parse(storedPermissions) : []);
-                setRoles(storedRoles ? JSON.parse(storedRoles) : []);
-            } catch (e) {
-                console.error('Error reading permissions/roles from localStorage', e);
-                setPermissions([]);
-                setRoles([]);
-            }
-        };
-
-        // Initial fetch
-        handleAuthChange();
-
-        // Listen for token updates and logout events
-        window.addEventListener('storage', handleAuthChange);
-        window.addEventListener('auth-change', handleAuthChange);
-
-        return () => {
-            window.removeEventListener('storage', handleAuthChange);
-            window.removeEventListener('auth-change', handleAuthChange);
-        };
-    }, []);
+    const permissions = useSelector(selectPermissions);
+    const roles = useSelector(selectRoles);
 
     const hasPermission = (requiredPermission: string | string[]): boolean => {
         // ADMIN has bypass privileges
