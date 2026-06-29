@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 
-import { Breadcrumb, Layout, Menu, theme, Button, message } from 'antd';
+import { Breadcrumb, Layout, Menu, theme, Button, message, Dropdown } from 'antd';
+import { UserOutlined, DownOutlined } from '@ant-design/icons';
 
 import { Outlet } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -44,21 +45,30 @@ const App: React.FC = () => {
     setCurOpenKeys(openKeyItems)
   }, [path])
 
+  const [username, setUsername] = useState('用户');
 
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  useEffect(() => {
+    const loadUsername = () => {
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          const userObj = JSON.parse(storedUser);
+          setUsername(userObj.nickname || userObj.username || '用户');
+        } else {
+          setUsername('用户');
+        }
+      } catch (e) {
+        console.error('Failed to parse user info', e);
+        setUsername('用户');
+      }
+    };
 
-  const navigate = useNavigate();
-  const handleOnClickMenu = ({ item, key, keyPath, domEvent }) => {
-
-    navigate(key)
-    setCurrent(key)
-  }
-
-  const handleOnOpenChange = (openKeys) => {
-    setCurOpenKeys(openKeys)
-  }
+    loadUsername();
+    window.addEventListener('auth-change', loadUsername);
+    return () => {
+      window.removeEventListener('auth-change', loadUsername);
+    };
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -66,7 +76,10 @@ const App: React.FC = () => {
       if (data?.code === 200) {
         localStorage.removeItem('accessToken')
         localStorage.removeItem('refreshToken')
-        // localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        localStorage.removeItem('roles')
+        localStorage.removeItem('permissions')
+        window.dispatchEvent(new Event('auth-change'))
         window.location.href = getLoginRedirectPath('/app-react/login')
         return
       }
@@ -74,6 +87,28 @@ const App: React.FC = () => {
     } catch (error) {
       message.error('退出登录失败')
     }
+  }
+
+  const userMenuItems: MenuProps['items'] = [
+    {
+      key: 'logout',
+      label: '退出登录',
+      onClick: handleLogout,
+    },
+  ];
+
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+
+  const navigate = useNavigate();
+  const handleOnClickMenu = ({ item, key, keyPath, domEvent }: any) => {
+    navigate(key)
+    setCurrent(key)
+  }
+
+  const handleOnOpenChange = (openKeys: string[]) => {
+    setCurOpenKeys(openKeys)
   }
 
   const hideMenu = () => {
@@ -94,20 +129,24 @@ const App: React.FC = () => {
             
           </Header>
         )} */}
-        <Content style={{ }}>
-         {
-!hideMenu() && (
-   <div className='mb-4 bg-white px-8 flex justify-between items-center' >
-            <Breadcrumb style={{ padding: '10px 0px' }} items={breadList} />
-            <Button type="link" onClick={handleLogout}>
-              退出登录
-            </Button>
-          </div>
-)
-         }
+        <Content style={{}}>
+          {
+            !hideMenu() && (
+              <div className='mb-4 bg-white px-8 flex justify-between items-center' >
+                <Breadcrumb style={{ padding: '10px 0px' }} items={breadList} />
+                <Dropdown menu={{ items: userMenuItems }} placement="bottomRight" arrow>
+                  <div className="flex items-center gap-1 hover:text-blue-500 transition-colors" style={{ padding: '4px 8px', cursor: 'pointer' }}>
+                    <UserOutlined />
+                    <span className="font-medium">{username}</span>
+                    <DownOutlined style={{ fontSize: '10px' }} />
+                  </div>
+                </Dropdown>
+              </div>
+            )
+          }
           <div
             style={{
-            
+
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}

@@ -15,6 +15,13 @@ type LoginResponse = {
     data?: {
         accessToken?: string;
         refreshToken?: string;
+        user?: {
+            id: number;
+            username: string;
+            nickname: string;
+        };
+        roles?: string[];
+        permissions?: string[];
     };
 };
 
@@ -33,6 +40,7 @@ const FormLogin: React.FC = () => {
 
             if (data?.code === 200) {
                 const authData = data.data
+                console.log('authData', JSON.stringify(authData, null, 3))
 
                 if (authData?.accessToken) {
                     localStorage.setItem("accessToken", authData.accessToken);
@@ -42,6 +50,20 @@ const FormLogin: React.FC = () => {
                 if (authData?.refreshToken) {
                     localStorage.setItem("refreshToken", authData.refreshToken);
                 }
+
+                if (authData?.user) {
+                    localStorage.setItem("user", JSON.stringify(authData.user));
+                }
+
+                if (authData?.roles) {
+                    localStorage.setItem("roles", JSON.stringify(authData.roles));
+                }
+
+                if (authData?.permissions) {
+                    localStorage.setItem("permissions", JSON.stringify(authData.permissions));
+                }
+
+                window.dispatchEvent(new Event("auth-change"));
 
                 const params = new URLSearchParams(window.location.search)
                 const redirect = params.get('redirect')

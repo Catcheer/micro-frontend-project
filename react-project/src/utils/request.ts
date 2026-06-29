@@ -41,6 +41,10 @@ const clearAuthTokens = () => {
     localStorage.removeItem(ACCESS_TOKEN_KEY)
     localStorage.removeItem(REFRESH_TOKEN_KEY)
     localStorage.removeItem(LEGACY_TOKEN_KEY)
+    localStorage.removeItem('user')
+    localStorage.removeItem('roles')
+    localStorage.removeItem('permissions')
+    window.dispatchEvent(new Event('auth-change'))
 }
 
 const redirectToLogin = () => {

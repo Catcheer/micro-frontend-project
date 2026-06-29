@@ -9,6 +9,7 @@ import {useStudentClass} from '@/pages/student/hooks/useStudentClass'
 import AddAndEdit from './addAndEdit.tsx'
 import './index.less'
 import dayjs from 'dayjs';
+import { PermissionButton } from '@/components/Permission';
 
 
 
@@ -140,7 +141,7 @@ const StudentList: React.FC = () => {
                 return (
                     <div>
                         <Button type="link" onClick={() => { handleEdit(record) }}>编辑</Button>
-                        <Button type="link" onClick={() => { handleDelete(record) }}>删除</Button>
+                        <PermissionButton type="link" permission="student:delete" onClick={() => { handleDelete(record) }}>删除</PermissionButton>
 
                     </div>
                 )
@@ -260,7 +261,7 @@ const StudentList: React.FC = () => {
                                 <div className='flex flex-wrap gap-3 justify-end'>
                                     <Button type="primary" onClick={handleSearch}>查询</Button>
                                     <Button onClick={handleReset}>重置</Button>
-                                    <Button onClick={handleAdd}>新增</Button>
+                                    <PermissionButton permission="student:add" onClick={handleAdd}>新增</PermissionButton>
                                     <Upload
                                         showUploadList={false}
                                         accept=".xlsx, .xls"

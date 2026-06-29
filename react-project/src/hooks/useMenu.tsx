@@ -52,6 +52,7 @@ const menuList = [
       {
         label: '学生列表',
         key: '/studentList',
+        permission: 'student:list',
       }
     ]
   },
@@ -63,8 +64,10 @@ const menuList = [
 
 ]
 
+import { usePermissions } from './usePermissions';
 
 export function useMenu() {
+  const { hasPermission } = usePermissions();
 
   function getItem(
     label: React.ReactNode,
@@ -80,14 +83,26 @@ export function useMenu() {
     } as MenuItem;
   }
 
-  function getMenuList(list) {
+  function getMenuList(list: any[]) {
     let arr: MenuItem[] = []
 
     list.forEach((item: any) => {
-      if (item.children) {
-        item.children = getMenuList(item.children)
+      // Check if user has permission for this menu item
+      if (item.permission && !hasPermission(item.permission)) {
+        return;
       }
-      arr.push(getItem(item.label, item.key, item.icon, item.children))
+
+      let children = undefined;
+      if (item.children) {
+        const filteredChildren = getMenuList(item.children);
+        if (filteredChildren.length === 0) {
+          // If all submenus are hidden, hide this parent menu item as well
+          return;
+        }
+        children = filteredChildren;
+      }
+
+      arr.push(getItem(item.label, item.key, item.icon, children))
     })
 
     return arr

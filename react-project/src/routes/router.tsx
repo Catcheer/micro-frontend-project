@@ -19,6 +19,7 @@ import ProductImageManage from '@/pages/product/imageManagement/index.tsx'
 import OrderList from '@/pages/order/list/index.tsx'
 import StudentList from '@/pages/student/list/index.tsx'
 import Login from '@/pages/login/index.tsx'
+import { ProtectedRoute } from '@/components/Permission'
 
 export const router = createBrowserRouter([
 
@@ -49,7 +50,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/studentList",
-        element: <StudentList />,
+        element: <ProtectedRoute permission="student:list"><StudentList /></ProtectedRoute>,
       },
       {
         path: "/about",
