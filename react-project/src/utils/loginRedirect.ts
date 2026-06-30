@@ -6,5 +6,6 @@ export const getLoginRedirectPath = (loginPath: string) => {
   }
 
   const redirect = encodeURIComponent(currentUrl);
+
   return `${loginPath}?redirect=${redirect}`;
 };

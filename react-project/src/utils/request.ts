@@ -44,7 +44,8 @@ const clearAuthTokens = () => {
 }
 
 const redirectToLogin = () => {
-    router.navigate(getLoginRedirectPath('/login'))
+    router.navigate(getLoginRedirectPath(`/${import.meta.env.VITE_APP_NAME}/login`))
+    // window.location.href = getLoginRedirectPath(`/${import.meta.env.VITE_APP_NAME}/login`)
 }
 
 let isRefreshing = false

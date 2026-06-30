@@ -44,7 +44,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ permission, chil
     const token = localStorage.getItem('accessToken');
     if (!token) {
         // Redirect to login with redirect parameter
-        return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`} replace />;
+        return <Navigate to={`/login?redirect=/${import.meta.env.VITE_APP_NAME}${encodeURIComponent(location.pathname + location.search)}`} replace />;
     }
 
     if (permission && !hasPermission(permission)) {
@@ -55,7 +55,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ permission, chil
                     title="403"
                     subTitle="对不起，您没有权限访问此页面。"
                     extra={
-                        <Button type="primary" onClick={() => window.location.href = '/app-react/'}>
+                        <Button type="primary" onClick={() => window.location.href = `/${import.meta.env.VITE_APP_NAME}/`}>
                             返回首页
                         </Button>
                     }

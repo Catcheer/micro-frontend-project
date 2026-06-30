@@ -54,15 +54,17 @@ const FormLogin: React.FC = () => {
                         permissions: authData.permissions || [],
                     }));
                 }
-
+                console.log('window.location.search', window.location.search)
                 const params = new URLSearchParams(window.location.search)
+
                 const redirect = params.get('redirect')
+                console.log('redirect', redirect)
                 if (redirect) {
-                    window.location.href = decodeURIComponent(redirect)
+                    window.location.href = `${decodeURIComponent(redirect)}`
                     return;
                 }
 
-                window.location.href = "/app-react/";
+                window.location.href = `/${import.meta.env.VITE_APP_NAME}/`;
                 return;
             }
 

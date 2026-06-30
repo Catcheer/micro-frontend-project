@@ -54,7 +54,7 @@ const App: React.FC = () => {
       const data = await userLogout()
       if (data?.code === 200) {
         dispatch(clearAuth())
-        window.location.href = getLoginRedirectPath('/app-react/login')
+        window.location.href = getLoginRedirectPath(`/${import.meta.env.VITE_APP_NAME}/login`)
         return
       }
       message.error(data?.message || '退出登录失败')

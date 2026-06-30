@@ -19,7 +19,10 @@ import ProductImageManage from '@/pages/product/imageManagement/index.tsx'
 import OrderList from '@/pages/order/list/index.tsx'
 import StudentList from '@/pages/student/list/index.tsx'
 import Login from '@/pages/login/index.tsx'
+import UserCenter from '@/pages/userCenter/index.tsx'
 import { ProtectedRoute } from '@/components/Permission'
+
+
 
 export const router = createBrowserRouter([
 
@@ -31,6 +34,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/usercenter",
+        element: <UserCenter />,
       },
       {
         path: "/login",
