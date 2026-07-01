@@ -15,3 +15,7 @@ export const userLogout = () => {
 export const uploadAvatar = (data: FormData) => {
     return post('/user/upload/avatar', data)
 }
+
+export const updateUserInfo = (data: { nickname?: string; phone?: string; email?: string }) => {
+    return post('/user/update', data)
+}

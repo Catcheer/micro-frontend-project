@@ -6,12 +6,13 @@ import {
     Form,
     Input,
     message,
-    Spin
+    Spin,
+    Button
 } from 'antd';
 import { CameraOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser, updateUser, selectRoles } from '@/store/authSlice';
-import { uploadAvatar } from '@/api/login';
+import { uploadAvatar, updateUserInfo } from '@/api/login';
 
 const UserCenter = () => {
     const dispatch = useDispatch();
@@ -19,12 +20,14 @@ const UserCenter = () => {
     const authRoles = useSelector(selectRoles);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [uploading, setUploading] = useState(false);
+    const [editing, setEditing] = useState(false);
+    const [saving, setSaving] = useState(false);
     const [form] = Form.useForm();
 
     const initialValues = {
         name: authUser?.username || '',
         nickName: authUser?.nickname || '',
-        phoneNumber: authUser?.phone || authUser?.phoneNumber || '',
+        phone: authUser?.phone || '',
         email: authUser?.email || '',
         createTime: authUser?.createTime || '',
         roles: authRoles?.join(', ') || '',
@@ -37,7 +40,7 @@ const UserCenter = () => {
             form.setFieldsValue({
                 name: authUser.username || '',
                 nickName: authUser.nickname || '',
-                phoneNumber: authUser.phone || authUser.phoneNumber || '',
+                phone: authUser.phone || '',
                 email: authUser.email || '',
                 createTime: authUser.createTime || '',
                 roles: authRoles?.join(', ') || '',
@@ -91,6 +94,48 @@ const UserCenter = () => {
         }
     };
 
+    const handleEdit = () => {
+        setEditing(true);
+    };
+
+    const handleCancel = () => {
+        form.setFieldsValue({
+            nickName: authUser?.nickname || '',
+            phone: authUser?.phone || '',
+            email: authUser?.email || '',
+        });
+        setEditing(false);
+    };
+
+    const handleSave = async () => {
+        try {
+            const values = await form.validateFields(['nickName', 'phone', 'email']);
+            setSaving(true);
+            const res: any = await updateUserInfo({
+                nickname: values.nickName,
+                phone: values.phone,
+                email: values.email,
+            });
+            if (res?.code === 200) {
+                dispatch(updateUser({
+                    nickname: values.nickName,
+                    phone: values.phone,
+                    email: values.email,
+                }));
+                message.success('保存成功！');
+                setEditing(false);
+            } else {
+                message.error(res?.message || '保存失败！');
+            }
+        } catch (error: any) {
+            if (typeof error === 'string') {
+                message.error(error);
+            }
+        } finally {
+            setSaving(false);
+        }
+    };
+
     return (
         <div className="px-8 py-8">
             <div className='flex'>
@@ -101,7 +146,6 @@ const UserCenter = () => {
                     >
                         <img
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            // src={authUser?.avatar || "/defaultAvatar.jpg"}
                             src={authUser?.avatar ? `/api/uploads/${authUser?.avatar}` : '/defaultAvatar.jpg'}
                             alt="Avatar"
                         />
@@ -133,6 +177,17 @@ const UserCenter = () => {
                     className='pl-8 flex-1'
                     initialValues={initialValues}
                 >
+                    <div className='flex justify-end mb-2'>
+                        {!editing ? (
+                            <Button type="primary" onClick={handleEdit}>编辑</Button>
+                        ) : (
+                            <>
+                                <Button onClick={handleCancel} style={{ marginRight: 8 }}>取消</Button>
+                                <Button type="primary" loading={saving} onClick={handleSave}>保存</Button>
+                            </>
+                        )}
+                    </div>
+
                     <Row className='pt-4' gutter={30}>
                         <Col span={12}>
                             <Form.Item
@@ -151,8 +206,8 @@ const UserCenter = () => {
                                 name="nickName"
                             >
                                 <Input
-                                    variant="borderless"
-                                    readOnly
+                                    variant={editing ? 'outlined' : 'borderless'}
+                                    readOnly={!editing}
                                     placeholder="请输入昵称" />
                             </Form.Item>
                         </Col>
@@ -162,11 +217,11 @@ const UserCenter = () => {
                         <Col span={12}>
                             <Form.Item
                                 label="手机号"
-                                name="phoneNumber"
+                                name="phone"
                             >
                                 <Input
-                                    variant="borderless"
-                                    readOnly
+                                    variant={editing ? 'outlined' : 'borderless'}
+                                    readOnly={!editing}
                                     placeholder="" />
                             </Form.Item>
                         </Col>
@@ -176,8 +231,8 @@ const UserCenter = () => {
                                 name="email"
                             >
                                 <Input
-                                    variant="borderless"
-                                    readOnly
+                                    variant={editing ? 'outlined' : 'borderless'}
+                                    readOnly={!editing}
                                     placeholder="" />
                             </Form.Item>
                         </Col>
@@ -239,3 +294,4 @@ const UserCenter = () => {
 };
 
 export default UserCenter;
+

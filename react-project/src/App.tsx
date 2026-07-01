@@ -65,6 +65,11 @@ const App: React.FC = () => {
 
   const userMenuItems: MenuProps['items'] = [
     {
+      key: 'usercenter',
+      label: '用户中心',
+      onClick: () => navigate('/usercenter'),
+    },
+    {
       key: 'logout',
       label: '退出登录',
       onClick: handleLogout,
@@ -109,9 +114,12 @@ const App: React.FC = () => {
               <div className='mb-4 bg-white px-8 flex justify-between items-center' >
                 <Breadcrumb style={{ padding: '10px 0px' }} items={breadList} />
                 <Dropdown menu={{ items: userMenuItems }} placement="bottomRight" arrow>
-                  <div className="flex items-center gap-1 hover:text-blue-500 transition-colors" style={{ padding: '4px 8px', cursor: 'pointer' }}>
-                    <UserOutlined />
-                    <span className="font-medium">{username}</span>
+                  <div className="flex items-center gap-2" style={{ padding: '4px 8px', cursor: 'pointer' }}>
+                    <img
+                      src={authUser?.avatar ? `/api/uploads/${authUser?.avatar}` : '/defaultAvatar.jpg'}
+                      alt="avatar"
+                      style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover' }}
+                    />
                     <DownOutlined style={{ fontSize: '10px' }} />
                   </div>
                 </Dropdown>
