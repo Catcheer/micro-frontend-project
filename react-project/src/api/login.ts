@@ -11,3 +11,7 @@ export const userRefreshToken = (refreshToken: string) => {
 export const userLogout = () => {
     return get('/user/logout')
 }
+
+export const uploadAvatar = (data: FormData) => {
+    return post('/user/upload/avatar', data)
+}

@@ -4,6 +4,13 @@ export interface UserInfo {
     id: number;
     username: string;
     nickname: string;
+    avatar?: string;
+    phone?: string;
+    email?: string;
+    createTime?: string;
+    roles?: string[];
+    lastLoginTime?: string;
+    lastLoginIp?: string;
 }
 
 export interface AuthState {
@@ -68,6 +75,16 @@ const authSlice = createSlice({
                 console.error('Failed to write authentication to localStorage', e);
             }
         },
+        updateUser: (state, action: PayloadAction<Partial<UserInfo>>) => {
+            if (state.user) {
+                state.user = { ...state.user, ...action.payload };
+                try {
+                    localStorage.setItem('user', JSON.stringify(state.user));
+                } catch (e) {
+                    console.error('Failed to write user to localStorage', e);
+                }
+            }
+        },
         clearAuth: (state) => {
             state.accessToken = null;
             state.refreshToken = null;
@@ -89,7 +106,7 @@ const authSlice = createSlice({
     },
 });
 
-export const { setLoginInfo, clearAuth } = authSlice.actions;
+export const { setLoginInfo, clearAuth, updateUser } = authSlice.actions;
 
 export const selectAuth = (state: any) => state.auth;
 export const selectPermissions = (state: any) => state.auth.permissions;
