@@ -64,15 +64,18 @@ export const router = createBrowserRouter([
       },
       {
         path: "/userManage",
-        element: <UserManage />,
+        // element: <UserManage />,
+        element: <ProtectedRoute permission="user:list"><UserManage /></ProtectedRoute>,
       },
       {
         path: "/roleManage",
-        element: <RoleManage />,
+        // element: <RoleManage />,
+        element: <ProtectedRoute permission="role:list"><RoleManage /></ProtectedRoute>,
       },
       {
         path: "/permissionManage",
-        element: <PermissionManage />,
+        // element: <PermissionManage />,
+        element: <ProtectedRoute permission="permission:list"><PermissionManage /></ProtectedRoute>,
       },
       {
         path: "/about",

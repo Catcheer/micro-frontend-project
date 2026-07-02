@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
-import { Modal, Form, Input, message } from 'antd';
+import React, { useEffect,useState, } from "react";
+import { Modal, Form, Input, message ,Select} from 'antd';
 import { addRole, editRole } from '@/api/role';
+
+import { getPermissionList } from '@/api/permission';
 
 type Props = {
     visible: boolean;
@@ -20,11 +22,22 @@ export default function AddAndEdit(props: Props) {
                 roleName: curRow.roleName,
                 roleCode: curRow.roleCode,
                 description: curRow.description,
+                permissions: curRow.permissions?.map((permission: any) => permission.permissionCode) || [],
             });
         } else {
             form.resetFields();
         }
     }, [visible, curRow, form]);
+
+
+    const [permissionOptions, setPermissionOptions] = useState<any[]>([]);
+
+    useEffect(() => {
+        if (!visible) return;
+        getPermissionList({ page: 1, pageSize: 999 }).then((res: any) => {
+            setPermissionOptions(res?.list || []);
+        });
+    }, [visible]);
 
     const handleCancel = () => {
         setVisible(false);
@@ -90,6 +103,20 @@ export default function AddAndEdit(props: Props) {
 
                 >
                     <Input placeholder="请输入描述" />
+                </Form.Item>
+
+                <Form.Item
+                    label="权限"
+                    name="permissions"
+                >
+                    <Select
+                        mode="multiple"
+                        placeholder="请选择权限"
+                        options={permissionOptions.map((permission) => ({
+                            label: permission.permissionName,
+                            value: permission.permissionCode,
+                        }))}
+                    />
                 </Form.Item>
 
             </Form>

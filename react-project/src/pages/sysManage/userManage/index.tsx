@@ -3,7 +3,7 @@ import { Table, Button, Form, Input, message, Card, Row, Col, Popconfirm } from 
 import { getUserList, deleteUser } from '@/api/user';
 import usePagination from '@/hooks/usePagination.tsx';
 import AddAndEdit from './addAndEdit';
-
+import { PermissionButton } from '@/components/Permission';
 const UserManage: React.FC = () => {
     const initSearchParams = {
         userName: '',
@@ -88,21 +88,18 @@ const UserManage: React.FC = () => {
             key: 'operate',
             render: (_: any, record: any) => (
                 <div>
-                    <Button
-                        type="link"
-                        onClick={() => handleEdit(record)}
-                    >
-                        编辑
-                    </Button>
+                    <PermissionButton permission="user:add" onClick={() => handleEdit(record)}>
+                        <Button type="link">编辑</Button>
+                    </PermissionButton>
                     <Popconfirm
                         title="确认删除该用户吗？"
                         onConfirm={() => handleDelete(record)}
                         okText="确认"
                         cancelText="取消"
                     >
-                        <Button type="link" danger>
-                            删除
-                        </Button>
+                        <PermissionButton permission="user:delete" onClick={() => handleDelete(record)}>
+                            <Button type="link" danger>删除</Button>
+                        </PermissionButton>
                     </Popconfirm>
                 </div>
             ),
@@ -178,7 +175,7 @@ const UserManage: React.FC = () => {
                             <div className='flex flex-wrap gap-3 justify-end'>
                                 <Button type="primary" onClick={handleSearch}>查询</Button>
                                 <Button onClick={handleReset}>重置</Button>
-                                <Button onClick={handleAdd}>新增</Button>
+                                <PermissionButton permission="user:add" onClick={handleAdd}>新增</PermissionButton>
                             </div>
                         </Col>
                     </Row>

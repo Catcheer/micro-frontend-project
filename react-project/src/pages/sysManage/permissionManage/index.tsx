@@ -3,6 +3,8 @@ import { Table, Button, Form, Input, message, Row, Col, Popconfirm } from 'antd'
 import { getPermissionList, deletePermission } from '@/api/permission';
 import usePagination from '@/hooks/usePagination.tsx';
 import AddAndEdit from './addAndEdit';
+import { PermissionButton } from '@/components/Permission';
+
 
 const PermissionManage: React.FC = () => {
     const initSearchParams = {
@@ -66,21 +68,22 @@ const PermissionManage: React.FC = () => {
             key: 'operate',
             render: (_: any, record: any) => (
                 <div>
-                    <Button
+                    <PermissionButton
+                        permission="permission:add"
                         type="link"
                         onClick={() => handleEdit(record)}
                     >
                         编辑
-                    </Button>
+                    </PermissionButton>
                     <Popconfirm
                         title="确认删除该权限吗？"
                         onConfirm={() => handleDelete(record)}
                         okText="确认"
                         cancelText="取消"
                     >
-                        <Button type="link" danger>
+                        <PermissionButton permission="permission:delete" type="link" danger>
                             删除
-                        </Button>
+                        </PermissionButton>
                     </Popconfirm>
                 </div>
             ),
@@ -147,7 +150,7 @@ const PermissionManage: React.FC = () => {
                             <div className='flex flex-wrap gap-3 justify-end'>
                                 <Button type="primary" onClick={handleSearch}>查询</Button>
                                 <Button onClick={handleReset}>重置</Button>
-                                <Button onClick={handleAdd}>新增</Button>
+                                <PermissionButton permission="permission:add" onClick={handleAdd}>新增</PermissionButton>
                             </div>
                         </Col>
                     </Row>

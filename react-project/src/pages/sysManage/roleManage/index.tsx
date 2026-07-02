@@ -3,7 +3,7 @@ import { Table, Button, Form, Input, message, Card, Row, Col, Popconfirm } from 
 import { getRoleList, deleteRole } from '@/api/role';
 import usePagination from '@/hooks/usePagination.tsx';
 import AddAndEdit from './addAndEdit';
-
+import { PermissionButton } from '@/components/Permission';
 const RoleManage: React.FC = () => {
     const initSearchParams = {
         roleName: '',
@@ -56,6 +56,14 @@ const RoleManage: React.FC = () => {
             key: 'roleCode',
         },
         {
+            title: '权限',
+            dataIndex: 'permissions',
+            key: 'permissions',
+            render: (permissions: any[]) => {
+                return permissions.map((permission: any) => permission.permissionName).join(',');
+            },
+        },
+        {
             title: '描述',
             dataIndex: 'description',
             key: 'email',
@@ -72,21 +80,22 @@ const RoleManage: React.FC = () => {
             key: 'operate',
             render: (_: any, record: any) => (
                 <div>
-                    <Button
+                    <PermissionButton
+                        permission="role:add"
                         type="link"
                         onClick={() => handleEdit(record)}
                     >
                         编辑
-                    </Button>
+                    </PermissionButton>
                     <Popconfirm
                         title="确认删除该用户吗？"
                         onConfirm={() => handleDelete(record)}
                         okText="确认"
                         cancelText="取消"
                     >
-                        <Button type="link" danger>
+                        <PermissionButton permission="role:delete" type="link" danger>
                             删除
-                        </Button>
+                        </PermissionButton>
                     </Popconfirm>
                 </div>
             ),
@@ -153,7 +162,7 @@ const RoleManage: React.FC = () => {
                             <div className='flex flex-wrap gap-3 justify-end'>
                                 <Button type="primary" onClick={handleSearch}>查询</Button>
                                 <Button onClick={handleReset}>重置</Button>
-                                <Button onClick={handleAdd}>新增</Button>
+                                <PermissionButton permission="role:add" onClick={handleAdd}>新增</PermissionButton>
                             </div>
                         </Col>
                     </Row>
