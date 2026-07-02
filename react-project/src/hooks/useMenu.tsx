@@ -68,6 +68,10 @@ const menuList = [
       {
         label: '角色管理',
         key: '/roleManage',
+      },
+      {
+        label: '权限管理',
+        key: '/permissionManage',
       }
     ]
   },

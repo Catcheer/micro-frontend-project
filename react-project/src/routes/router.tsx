@@ -22,6 +22,7 @@ import Login from '@/pages/login/index.tsx'
 import UserCenter from '@/pages/userCenter/index.tsx'
 import UserManage from '@/pages/sysManage/userManage/index.tsx'
 import RoleManage from '@/pages/sysManage/roleManage/index.tsx'
+import PermissionManage from '@/pages/sysManage/permissionManage/index.tsx'
 import { ProtectedRoute } from '@/components/Permission'
 
 
@@ -68,6 +69,10 @@ export const router = createBrowserRouter([
       {
         path: "/roleManage",
         element: <RoleManage />,
+      },
+      {
+        path: "/permissionManage",
+        element: <PermissionManage />,
       },
       {
         path: "/about",
