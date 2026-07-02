@@ -17,7 +17,7 @@ export default function AddAndEdit(props: Props) {
         if (!visible) return;
         if (curRow) {
             form.setFieldsValue({
-                nickName: curRow.nickName,
+                nickName: curRow.nickname,
                 phone: curRow.phone,
                 email: curRow.email,
             });
@@ -37,7 +37,8 @@ export default function AddAndEdit(props: Props) {
             if (curRow) {
                 const { id, ...rest } = { ...values, id: curRow.id };
                 const res = await editUser(id, rest);
-                if (res?.code === 200 || res === undefined) {
+                console.log('res', res)
+                if (res) {
                     message.success('修改成功');
                 } else {
                     message.error(res?.message || '修改失败');
@@ -73,7 +74,7 @@ export default function AddAndEdit(props: Props) {
                     <>
                         <Form.Item
                             label="用户名"
-                            name="username"
+                            name="userName"
                             rules={[{ required: true, message: '请输入用户名' }]}
                         >
                             <Input placeholder="请输入用户名" />

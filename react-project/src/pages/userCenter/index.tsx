@@ -12,7 +12,8 @@ import {
 import { CameraOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser, updateUser, selectRoles } from '@/store/authSlice';
-import { uploadAvatar, updateUserInfo } from '@/api/login';
+import { uploadAvatar } from '@/api/login';
+import { editUser } from '@/api/user';
 
 const UserCenter = () => {
     const dispatch = useDispatch();
@@ -111,12 +112,12 @@ const UserCenter = () => {
         try {
             const values = await form.validateFields(['nickName', 'phone', 'email']);
             setSaving(true);
-            const res: any = await updateUserInfo({
+            const res: any = await editUser(authUser!.id, {
                 nickname: values.nickName,
                 phone: values.phone,
                 email: values.email,
             });
-            if (res?.code === 200) {
+            if (res) {
                 dispatch(updateUser({
                     nickname: values.nickName,
                     phone: values.phone,
@@ -125,7 +126,7 @@ const UserCenter = () => {
                 message.success('保存成功！');
                 setEditing(false);
             } else {
-                message.error(res?.message || '保存失败！');
+                message.error('保存失败！');
             }
         } catch (error: any) {
             if (typeof error === 'string') {
