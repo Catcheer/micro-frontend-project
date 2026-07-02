@@ -64,6 +64,10 @@ const menuList = [
       {
         label: '用户管理',
         key: '/userManage',
+      },
+      {
+        label: '角色管理',
+        key: '/roleManage',
       }
     ]
   },
