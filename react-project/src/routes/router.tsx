@@ -20,7 +20,7 @@ import OrderList from '@/pages/order/list/index.tsx'
 import StudentList from '@/pages/student/list/index.tsx'
 import Login from '@/pages/login/index.tsx'
 import UserCenter from '@/pages/userCenter/index.tsx'
-import UserManage from '@/pages/sysManage/userManage.tsx'
+import UserManage from '@/pages/sysManage/userManage/index.tsx'
 import { ProtectedRoute } from '@/components/Permission'
 
 

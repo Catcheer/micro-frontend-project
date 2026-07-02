@@ -46,7 +46,7 @@ export default function AddAndEdit(props: Props) {
                 }
             } else {
                 const res = await addUser(values);
-                if (res?.code === 200 || res === undefined) {
+                if (res) {
                     message.success('新增成功');
                 } else {
                     message.error(res?.message || '新增失败');
@@ -74,12 +74,19 @@ export default function AddAndEdit(props: Props) {
                     <>
                         <Form.Item
                             label="用户名"
-                            name="userName"
+                            name="username"
                             rules={[{ required: true, message: '请输入用户名' }]}
                         >
                             <Input placeholder="请输入用户名" />
                         </Form.Item>
-                        <Form.Item
+                        {/* <Form.Item
+                            label="密码"
+                            name="password"
+                            rules={[{ required: true, message: '请输入密码' }]}
+                        >
+                            <Input.Password placeholder="请输入密码" />
+                        </Form.Item> */}
+                        {/* <Form.Item
                             label="密码"
                             name="password"
                             rules={[{ required: true, message: '请输入密码' }]}
@@ -88,7 +95,7 @@ export default function AddAndEdit(props: Props) {
                         </Form.Item>
                         <Form.Item label="头像" name="avatar">
                             <Input placeholder="请输入头像地址" />
-                        </Form.Item>
+                        </Form.Item> */}
                     </>
                 )}
                 <Form.Item
