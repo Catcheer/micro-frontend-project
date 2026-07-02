@@ -6,7 +6,7 @@ import AddAndEdit from './addAndEdit';
 
 const UserManage: React.FC = () => {
     const initSearchParams = {
-        username: '',
+        userName: '',
         email: '',
         phone: '',
         nickName: '',
@@ -35,7 +35,7 @@ const UserManage: React.FC = () => {
             nickName: form.getFieldValue('nickName'),
             phone: form.getFieldValue('phone'),
             email: form.getFieldValue('email'),
-            username: form.getFieldValue('username')
+            userName: form.getFieldValue('userName')
         }
         getUserList(data).then((res: any) => {
             if (res) {
@@ -58,6 +58,14 @@ const UserManage: React.FC = () => {
             title: '昵称',
             dataIndex: 'nickname',
             key: 'nickname',
+        },
+        {
+            title: '所属角色',
+            dataIndex: 'roles',
+            key: 'roles',
+            render: (roles: any[]) => {
+                return roles.map((role: any) => role.roleName).join(',');
+            },
         },
         {
             title: '邮箱',
@@ -147,7 +155,7 @@ const UserManage: React.FC = () => {
                 >
                     <Row gutter={[16, 0]}>
                         <Col xxl={5} xl={6} lg={8} md={12} sm={24}>
-                            <Form.Item label="用户名" name="username">
+                            <Form.Item label="用户名" name="userName">
                                 <Input placeholder="请输入用户名" />
                             </Form.Item>
                         </Col>

@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
-import { Modal, Form, Input, message } from 'antd';
+import React, { useEffect, useState } from "react";
+import { Modal, Form, Input, message, Select } from 'antd';
 import { addUser, editUser } from '@/api/user';
+import { getRoleList } from '@/api/role';
 
 type Props = {
     visible: boolean;
@@ -12,6 +13,14 @@ type Props = {
 export default function AddAndEdit(props: Props) {
     const { visible, setVisible, search, curRow } = props;
     const [form] = Form.useForm();
+    const [roleOptions, setRoleOptions] = useState<any[]>([]);
+
+    useEffect(() => {
+        if (!visible) return;
+        getRoleList({ page: 1, pageSize: 999 }).then((res: any) => {
+            setRoleOptions(res?.list || []);
+        });
+    }, [visible]);
 
     useEffect(() => {
         if (!visible) return;
@@ -20,6 +29,7 @@ export default function AddAndEdit(props: Props) {
                 nickName: curRow.nickname,
                 phone: curRow.phone,
                 email: curRow.email,
+                roles: curRow.roles?.map((role: any) => role.roleCode) || [],
             });
         } else {
             form.resetFields();
@@ -117,6 +127,19 @@ export default function AddAndEdit(props: Props) {
                     rules={[{ type: 'email', message: '请输入正确的邮箱格式' }]}
                 >
                     <Input placeholder="请输入邮箱" />
+                </Form.Item>
+                <Form.Item
+                    label="所属角色"
+                    name="roles"
+                >
+                    <Select
+                        mode="multiple"
+                        placeholder="请选择所属角色"
+                        options={roleOptions.map((role) => ({
+                            label: role.roleName,
+                            value: role.roleCode,
+                        }))}
+                    />
                 </Form.Item>
             </Form>
         </Modal>
