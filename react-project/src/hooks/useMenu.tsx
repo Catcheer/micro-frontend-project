@@ -56,6 +56,17 @@ const menuList = [
       }
     ]
   },
+  {
+    label: '系统管理',
+    key: '/sysManage',
+    icon: <TeamOutlined />,
+    children: [
+      {
+        label: '用户管理',
+        key: '/userManage',
+      }
+    ]
+  },
   // {
   //   label: '关于我们',
   //   key: '/about',

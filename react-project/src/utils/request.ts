@@ -174,6 +174,10 @@ export const post = (url: string, data = {}, params = {}) => {
     return service.post(url, data, params)
 }
 
+export const put = (url: string, data = {}, params = {}) => {
+    return service.put(url, data, params)
+}
+
 export const del = (url: string, params = {}) => {
     return service.delete(url, params)
 }

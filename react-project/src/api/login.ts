@@ -1,4 +1,4 @@
-import { get, post } from '@/utils/request.ts'
+import { get, post, put } from '@/utils/request.ts'
 
 export const userLogin = (data: { username: string, password: string }) => {
     return post('/user/login', data)
@@ -17,5 +17,5 @@ export const uploadAvatar = (data: FormData) => {
 }
 
 export const updateUserInfo = (data: { nickname?: string; phone?: string; email?: string }) => {
-    return post('/user/update', data)
+    return put('/user/update', data)
 }
