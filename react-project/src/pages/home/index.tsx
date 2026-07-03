@@ -107,7 +107,7 @@ function Home() {
 
   return (
     <div className="px-6 py-4" style={{ minHeight: `calc(100vh - ${(navTopHight || 0)+60}px)` }}>
-      <Title level={3}>学生管理系统看板</Title>
+      <Title level={3}>管理系统看板</Title>
 
       <Row gutter={[16, 16]}>
         <Col span={6}>
