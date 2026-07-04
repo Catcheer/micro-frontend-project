@@ -1,7 +1,6 @@
-import React, { useEffect, useState ,useCallback} from 'react';
-import { Table, Button, Form, Input, DatePicker, message, Upload, Select, Card, Row, Col } from 'antd'
+import React from 'react';
 
-import { getStudentList, deleteStudent, uploadExcel, getExcel } from '@/api/student'
+import { getStudentList, deleteStudent, uploadExcel, getExcel, addStudent, editStudent } from '@/api/student'
 import { useStudentClass } from '@/pages/student/hooks/useStudentClass'
 
 import './index.less'
@@ -225,6 +224,8 @@ const StudentList: React.FC = () => {
         deleteApi={(id: string) => deleteStudent(Number(id))}
         exportApi={getExcel}
         importApi={uploadExcel}
+        addApi={addStudent}
+        editApi={editStudent}
         />
     )
 }

@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Modal, Form, Input, DatePicker, Select } from 'antd'
 import dayjs from "dayjs";
 
-import { addStudent, editStudent } from '@/api/student'
+
 
 
 
@@ -13,13 +13,15 @@ type Props = {
     search: () => void;
     curRow: Student | null;
     editFields: any[];
+    addApi: (data: any) => Promise<any>;
+    editApi: ( data: any) => Promise<any>;
 }
 
 
 
 
 export default function AddAndEdit(props: Props) {
-    const { visible, setVisible, search, curRow, editFields } = props
+    const { visible, setVisible, search, curRow, editFields, addApi, editApi } = props
     const [form] = Form.useForm();
    
     const EditItemComponent = (item: any) => {
@@ -86,9 +88,11 @@ export default function AddAndEdit(props: Props) {
 
 
             if (curRow) {
-                await editStudent(data);
+                data.id = curRow.id
+                
+                await editApi( data);
             } else {
-                await addStudent(data);
+                await addApi(data);
             }
 
             setVisible(false)

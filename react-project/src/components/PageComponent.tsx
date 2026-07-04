@@ -20,12 +20,14 @@ interface Props {
     deleteApi: (id: string) => Promise<any>
     exportApi: (params: any) => Promise<any>
     importApi: (data: FormData) => Promise<any>
+    addApi: (data: any) => Promise<any>
+    editApi: ( data: any) => Promise<any>
 }
 
 
 
 
-const StudentList = ({ pageSchema, getListApi, deleteApi, exportApi ,importApi}:Props) => {
+const StudentList = ({ pageSchema, getListApi, deleteApi, exportApi ,importApi, addApi, editApi}:Props) => {
 
     const [form] = Form.useForm();
     const [tableData, setTableData] = useState([])
@@ -283,6 +285,8 @@ const StudentList = ({ pageSchema, getListApi, deleteApi, exportApi ,importApi}:
             search={handleSearch} 
             curRow={curRow} 
             editFields={pageSchema.editFields}
+            addApi={addApi}
+            editApi={editApi}
             />
         </div>
     )
