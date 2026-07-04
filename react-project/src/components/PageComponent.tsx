@@ -27,7 +27,7 @@ interface Props {
 
 
 
-const StudentList = ({ pageSchema, getListApi, deleteApi, exportApi ,importApi, addApi, editApi}:Props) => {
+const PageComponent = ({ pageSchema, getListApi, deleteApi, exportApi ,importApi, addApi, editApi}:Props) => {
 
     const [form] = Form.useForm();
     const [tableData, setTableData] = useState([])
@@ -293,4 +293,4 @@ const StudentList = ({ pageSchema, getListApi, deleteApi, exportApi ,importApi, 
 }
 
 
-export default StudentList
+export default PageComponent

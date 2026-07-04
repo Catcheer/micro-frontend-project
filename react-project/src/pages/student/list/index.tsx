@@ -23,9 +23,9 @@ interface SearchField {
 interface StudentSchema {
     searchFields: Array<SearchField>;
     initSearchParams: Record<string, any>;
-    editFields:any[];
+    editFields:Array<Record<string, any>>;
    
-    columns: any[];
+    columns: Array<Record<string, any>>;
     toolbar: {
         add: boolean;
         import: boolean;
@@ -41,6 +41,9 @@ interface StudentSchema {
 
 
 const StudentList: React.FC = () => {
+
+
+    const classOptions = useStudentClass() || []
 
 
     const studentSchema: StudentSchema = {
@@ -62,7 +65,7 @@ const StudentList: React.FC = () => {
                 name: 'classId',
                 type: 'select',
                 placeholder: '请选择班级',
-                options: useStudentClass() || [],
+                options: classOptions,
             },
             {
                 label: '出生年月',
@@ -108,7 +111,7 @@ const StudentList: React.FC = () => {
             label:'班级',
             name:'classId',
             type:'select',
-            options:useStudentClass() || [],
+            options: classOptions,
            },
            {
             label:'出生年月',
