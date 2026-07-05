@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Modal, Form, Input, DatePicker, Select } from 'antd'
 import dayjs from "dayjs";
 
-
+const { TextArea } = Input;
 
 
 
@@ -32,6 +32,8 @@ export default function AddAndEdit(props: Props) {
                 return <Select placeholder={item.placeholder} options={item.options || []} />
             case 'DatePicker':
                 return <DatePicker placeholder={item.placeholder} />
+            case 'textarea':
+                return <Input.TextArea placeholder={item.placeholder} />
             default:
                 return null
         }

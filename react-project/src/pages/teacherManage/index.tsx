@@ -1,10 +1,14 @@
 import React from 'react';
 
-import { getStudentList, deleteStudent, uploadExcel, getExcel, addStudent, editStudent } from '@/api/student'
+import { 
+    getTeacherList,
+    addTeacher,
+    editTeacher,
+    deleteTeacher,
+ } from '@/api/teacher'
 import { useStudentClass } from '@/pages/student/hooks/useStudentClass'
 
 import './index.less'
-import dayjs from 'dayjs';
 
 import PageComponent from '@/components/PageComponent'
 
@@ -27,8 +31,8 @@ interface StudentSchema {
     columns: Array<Record<string, any>>;
     toolbar: {
         add: boolean;
-        import: boolean;
-        export: boolean;
+        import?: boolean;
+        export?: boolean;
         addPermission?: string;
         importPermission?: string;
         exportPermission?: string;
@@ -54,31 +58,33 @@ const StudentList: React.FC = () => {
                 placeholder: '请输入姓名',
             },
             {
-                label: '学号',
-                name: 'studentNo',
+                label: '工号',
+                name: 'teacherNo',
                 type: 'input',
-                placeholder: '请输入学号',
+                placeholder: '请输入工号',
             },
             {
-                label: '班级',
-                name: 'classId',
+                label: '手机号',
+                name: 'phone',
+                type: 'input',
+                placeholder: '请输入手机号',
+            },
+            {
+                label:'状态',
+                name: 'status',
                 type: 'select',
-                placeholder: '请选择班级',
-                options: classOptions,
-            },
-            {
-                label: '出生年月',
-                name: 'birthDate',
-                type: 'RangePicker',
-                placeholder: '请选择出生年月',
-            },
+                placeholder: '请选择状态',
+                options: [{ label: '在职', value: 1 }, { label: '离职', value: 2 }],
+            }
+
             
         ],
         initSearchParams : {
             name: '',
-            gender: '',
-            studentNo: '',
-            birthDate: []
+            teacherNo: '',
+            phone: '',
+            status: null,
+          
         },
 
         editFields:[{
@@ -88,8 +94,8 @@ const StudentList: React.FC = () => {
              type:'input',
             },
            {
-            label:'学号',
-            name:'studentNo',
+            label:'工号',
+            name:'teacherNo',
             rules:[{ max: 10, message: '学号最多10个字符' }],
             type:'input',
            },
@@ -103,20 +109,23 @@ const StudentList: React.FC = () => {
             label:'性别',
             name:'gender',
             type:'select',
-            options:[{ label: '男', value: '1' }, { label: '女', value: '2' }],
+            options:[{ label: '男', value: 1 }, { label: '女', value: 2}],
             placeholder:'请选择性别',
            },
+          
            {
-            label:'班级',
-            name:'classId',
+            label:'状态',
+            name:'status',
             type:'select',
-            options: classOptions,
+            placeholder:'请选择状态',
+            options:[{ label: '在职', value: 1 }, { label: '离职', value: 2 }],
            },
            {
-            label:'出生年月',
-            name:'birthday',
-            type:'DatePicker',
-            placeholder:'请选择出生年月',
+            label:'描述',
+            name:'description',
+            type:'textarea',
+            rules:[{ max: 20, message: '学号最多20个字符' }],
+            placeholder:'请输入描述',
            }
         ],
         columns : [
@@ -126,9 +135,9 @@ const StudentList: React.FC = () => {
                 key: 'name',
             },
             {
-                title: '学号',
-                dataIndex: 'studentNo',
-                key: 'studentNo',
+                title: '工号',
+                dataIndex: 'teacherNo',
+                key: 'teacherNo',
             },
             {
                 title: '手机号',
@@ -143,16 +152,19 @@ const StudentList: React.FC = () => {
                 
             },
             {
-                title: '班级',
-                dataIndex: 'className',
-                key: 'classId',
-    
+                title: '状态',
+                dataIndex: 'status',
+                key: 'status',
+                dict: 'status',
+                
             },
             {
-                title: '出生年月',
-                dataIndex: 'birthday',
-                key: 'birthday',
+                title: '描述',
+                dataIndex: 'description',
+                key: 'description',
+                
             },
+            
             {
                 title: '创建时间',
                 dataIndex: 'createTime',
@@ -176,12 +188,12 @@ const StudentList: React.FC = () => {
                     {
                       text: "编辑",
                       action: "edit",
-                      permission: "student:update"
+                      permission: "teacher:update"
                     },
                     {
                       text: "删除",
                       action: "delete",
-                      permission: "student:delete",
+                      permission: "teacher:delete",
                       danger: true
                     }
                   ]
@@ -192,10 +204,6 @@ const StudentList: React.FC = () => {
         toolbar: {
             add: true,
             addPermission: "student:add",
-            import: true,
-            importPermission: "student:upload",
-            export: true,
-            exportPermission: "student:export"
           }
     }
 
@@ -207,12 +215,11 @@ const StudentList: React.FC = () => {
         <PageComponent 
         pageSchema={studentSchema}
        
-        getListApi={getStudentList}
-        deleteApi={(id: string) => deleteStudent(Number(id))}
-        exportApi={getExcel}
-        importApi={uploadExcel}
-        addApi={addStudent}
-        editApi={editStudent}
+        getListApi={getTeacherList}
+        deleteApi={(id: string) => deleteTeacher(Number(id))}
+       
+        addApi={addTeacher}
+        editApi={editTeacher}
         />
     )
 }

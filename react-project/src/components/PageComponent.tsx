@@ -1,5 +1,5 @@
 import React, { useEffect, useState ,useCallback} from 'react';
-import { Table, Button, Form, Input, DatePicker, message, Upload, Select, Card, Row, Col } from 'antd'
+import { Table, Button, Form, message, Upload } from 'antd'
 
 
 
@@ -12,14 +12,27 @@ import dayjs from 'dayjs';
 import SearchForm from '@/components/SearchForm'
 import { PermissionButton } from './Permission';
 
+import { dictMap } from '@/const/dictMap.ts'
+
+
+interface ColumnType extends Record<string, any> {
+    type?: string
+    dict?: keyof typeof dictMap
+    format?: string
+    actions?: any[]
+    title?: string
+    dataIndex?: string
+    key?: string
+}
+
 
 
 interface Props {
     pageSchema: any
     getListApi: (params: any) => Promise<any>
     deleteApi: (id: string) => Promise<any>
-    exportApi: (params: any) => Promise<any>
-    importApi: (data: FormData) => Promise<any>
+    exportApi?: (params: any) => Promise<any>
+    importApi?: (data: FormData) => Promise<any>
     addApi: (data: any) => Promise<any>
     editApi: ( data: any) => Promise<any>
 }
@@ -54,7 +67,7 @@ const PageComponent = ({ pageSchema, getListApi, deleteApi, exportApi ,importApi
         }
 
 
-        exportApi(params).then(res => {
+        exportApi && exportApi(params).then(res => {
 
         })
 
@@ -179,7 +192,7 @@ const PageComponent = ({ pageSchema, getListApi, deleteApi, exportApi ,importApi
         const formData = new FormData();
         formData.append('file', file as any);
         try {
-            const res = await importApi(formData);
+            const res = importApi && (await importApi(formData));
             onSuccess(res);
             message.success('上传成功');
             _getPageList();
@@ -190,14 +203,8 @@ const PageComponent = ({ pageSchema, getListApi, deleteApi, exportApi ,importApi
     }
 
 
+    const ActionsColumnBuilder = (column: any) => {
 
-
-    const columns = pageSchema.columns.map((column: any)=> {
-
-        if(column.type !== "actions"){
-            return column;
-        }
-    
         return {
     
             ...column,
@@ -242,6 +249,56 @@ const PageComponent = ({ pageSchema, getListApi, deleteApi, exportApi ,importApi
             }
     
         }
+    }
+
+
+    const DictColumnBuilder = (column: ColumnType) => {
+         return {
+            ...column,
+            render: (text: any, record: any) => {
+                
+                return column.dict? dictMap[column.dict][text] : text
+            }
+         }
+    }
+
+    const FormatColumnBuilder = (column: ColumnType) => {
+        return {
+            ...column,
+            render: (text: any, record: any) => {
+                return column.format? dayjs(text).format(column.format) : text
+            }
+        }
+    }
+
+
+    const ColumnBilderMap ={
+
+        "actions":ActionsColumnBuilder,
+        "dict":DictColumnBuilder,
+        "format":FormatColumnBuilder
+    }
+
+
+
+
+    const columns = pageSchema.columns.map((column:ColumnType)=> {
+
+        if(column.type === "actions"){
+
+            return ColumnBilderMap[column.type](column)
+        }
+        if(column.dict){
+            return ColumnBilderMap['dict'](column)
+        }
+        if(column.format){
+            return ColumnBilderMap['format'](column)
+        }
+
+        return column;
+
+       
+      
     
     })
 
@@ -249,7 +306,7 @@ const PageComponent = ({ pageSchema, getListApi, deleteApi, exportApi ,importApi
 
     return (
         <div className='px-6 py-4'>
-            <div className='mb-6'>
+            <div className='mb-6'>  
 
 
                 <SearchForm 

@@ -13,16 +13,15 @@ import {
 import ErrorPage from "../error-page.js";
 import App from '../App.tsx'
 import Home from '@/pages/home/index.js'
-import About from '@/pages/about/index.js'
-import ProductPriceManage from '@/pages/product/priceManagement/index.tsx'
-import ProductImageManage from '@/pages/product/imageManagement/index.tsx'
-import OrderList from '@/pages/order/list/index.tsx'
 import StudentList from '@/pages/student/list/index.tsx'
 import Login from '@/pages/login/index.tsx'
 import UserCenter from '@/pages/userCenter/index.tsx'
 import UserManage from '@/pages/sysManage/userManage/index.tsx'
 import RoleManage from '@/pages/sysManage/roleManage/index.tsx'
 import PermissionManage from '@/pages/sysManage/permissionManage/index.tsx'
+import ClassManage from '@/pages/classManage/index.tsx'
+import TeacherManage from '@/pages/teacherManage/index.tsx'
+
 import { ProtectedRoute } from '@/components/Permission'
 
 
@@ -46,17 +45,16 @@ export const router = createBrowserRouter([
         path: "/login",
         element: <Login />,
       },
+
       {
-        path: "/productPriceManage",
-        element: <ProductPriceManage />,
+        path: "/classList",
+        // element: <ProtectedRoute permission="class:list"><ClassManage /></ProtectedRoute>,
+        element: <ClassManage />,
       },
       {
-        path: "/procuctImageManage",
-        element: <ProductImageManage />,
-      },
-      {
-        path: "/orderList",
-        element: <OrderList />,
+        path: "/teacherList",
+        // element: <ProtectedRoute permission="teacher:list"><TeacherManage /></ProtectedRoute>,
+        element: <TeacherManage />,
       },
       {
         path: "/studentList",
@@ -64,23 +62,17 @@ export const router = createBrowserRouter([
       },
       {
         path: "/userManage",
-        // element: <UserManage />,
         element: <ProtectedRoute permission="user:list"><UserManage /></ProtectedRoute>,
       },
       {
         path: "/roleManage",
-        // element: <RoleManage />,
         element: <ProtectedRoute permission="role:list"><RoleManage /></ProtectedRoute>,
       },
       {
         path: "/permissionManage",
-        // element: <PermissionManage />,
         element: <ProtectedRoute permission="permission:list"><PermissionManage /></ProtectedRoute>,
       },
-      {
-        path: "/about",
-        element: <About />,
-      },
+      
     ],
   },
 

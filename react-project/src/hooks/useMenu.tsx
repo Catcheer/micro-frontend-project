@@ -16,34 +16,8 @@ const menuList = [
     icon: <PieChartOutlined />,
   },
 
-  // {
-  //   label: '商品中心',
-  //   key: '/procuct',
-  //   icon: <UserOutlined />,
-  //   children: [
-
-  //     {
-  //       label: '价格管理',
-  //       key: '/productPriceManage',
-  //     },
-  //     {
-  //       label: '图片管理',
-  //       key: '/procuctImageManage',
-  //     },
-
-  //   ]
-  // },
-  // {
-  //   label: '订单管理',
-  //   key: '/order',
-  //   icon: <TeamOutlined />,
-  //   children: [
-  //     {
-  //       label: '订单列表',
-  //       key: '/orderList',
-  //     }
-  //   ]
-  // },
+  
+  
   {
     label: '学生管理',
     key: '/student',
@@ -56,6 +30,32 @@ const menuList = [
       }
     ]
   },
+  {
+    label: '教师管理',
+    key: '/teacher',
+    icon: <UserOutlined />,
+    children: [
+      {
+        label: '教师列表',
+        key: '/teacherList',
+        // permission: 'teacher:list',
+      }
+    ]
+  },
+  {
+    label: '班级管理',
+    key: '/class',
+    icon: <TeamOutlined />,
+    children: [
+      {
+        label: '班级列表',
+        key: '/classList',
+        // permission: 'class:list', 
+      }
+    ]
+  },
+
+
   {
     label: '系统管理',
     key: '/sysManage',
