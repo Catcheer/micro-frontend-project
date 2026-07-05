@@ -4,39 +4,8 @@ import { getStudentList, deleteStudent, uploadExcel, getExcel, addStudent, editS
 import { useStudentClass } from '@/pages/student/hooks/useStudentClass'
 
 import './index.less'
-import dayjs from 'dayjs';
 
 import PageComponent from '@/components/PageComponent'
-
-
-
-interface SearchField {
-    label: string;
-    name: string;
-    type: string;
-    placeholder: string;
-    options?: any[];
-}
-
-
-interface StudentSchema {
-    searchFields: Array<SearchField>;
-    initSearchParams: Record<string, any>;
-    editFields:Array<Record<string, any>>;
-   
-    columns: Array<Record<string, any>>;
-    toolbar: {
-        add: boolean;
-        import: boolean;
-        export: boolean;
-        addPermission?: string;
-        importPermission?: string;
-        exportPermission?: string;
-    }
-}
-
-
-
 
 
 const StudentList: React.FC = () => {
@@ -45,7 +14,7 @@ const StudentList: React.FC = () => {
     const classOptions = useStudentClass() || []
 
 
-    const studentSchema: StudentSchema = {
+    const pageSchema: PageSchema = {
         searchFields:[
             {
                 label: '姓名',
@@ -205,7 +174,7 @@ const StudentList: React.FC = () => {
     
     return (
         <PageComponent 
-        pageSchema={studentSchema}
+        pageSchema={pageSchema}
        
         getListApi={getStudentList}
         deleteApi={(id: string) => deleteStudent(Number(id))}

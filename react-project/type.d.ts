@@ -1,6 +1,34 @@
 
 // pagination
 
+
+
+interface SearchField {
+    label: string;
+    name: string;
+    type: string;
+    placeholder: string;
+    options?: any[];
+}
+
+
+interface PageSchema {
+    searchFields: Array<SearchField>;
+    initSearchParams: Record<string, any>;
+    editFields:Array<Record<string, any>>;
+   
+    columns: Array<Record<string, any>>;
+    toolbar: {
+        add: boolean;
+        import?: boolean;
+        export?: boolean;
+        addPermission?: string;
+        importPermission?: string;
+        exportPermission?: string;
+    }
+}
+
+
 interface PageParam {
     page: number,
     pageSize: number,

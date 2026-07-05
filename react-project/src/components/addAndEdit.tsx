@@ -29,7 +29,7 @@ export default function AddAndEdit(props: Props) {
             case 'input':
                 return <Input placeholder={item.placeholder} />
             case 'select':
-                return <Select placeholder={item.placeholder} options={item.options || []} />
+                return <Select mode={item.mode || 'default'} placeholder={item.placeholder} options={item.options || []} />
             case 'DatePicker':
                 return <DatePicker placeholder={item.placeholder} />
             case 'textarea':

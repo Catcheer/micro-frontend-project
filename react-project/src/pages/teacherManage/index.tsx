@@ -6,50 +6,20 @@ import {
     editTeacher,
     deleteTeacher,
  } from '@/api/teacher'
-import { useStudentClass } from '@/pages/student/hooks/useStudentClass'
 
 import './index.less'
 
 import PageComponent from '@/components/PageComponent'
 
-
-
-interface SearchField {
-    label: string;
-    name: string;
-    type: string;
-    placeholder: string;
-    options?: any[];
-}
-
-
-interface StudentSchema {
-    searchFields: Array<SearchField>;
-    initSearchParams: Record<string, any>;
-    editFields:Array<Record<string, any>>;
-   
-    columns: Array<Record<string, any>>;
-    toolbar: {
-        add: boolean;
-        import?: boolean;
-        export?: boolean;
-        addPermission?: string;
-        importPermission?: string;
-        exportPermission?: string;
-    }
-}
+import { useSubjectList } from '@/hooks/useSubjectList'
 
 
 
+const TeacherList: React.FC = () => {
+    const subjectList = useSubjectList()
 
 
-const StudentList: React.FC = () => {
-
-
-    const classOptions = useStudentClass() || []
-
-
-    const studentSchema: StudentSchema = {
+    const pageSchema: PageSchema = {
         searchFields:[
             {
                 label: '姓名',
@@ -69,6 +39,13 @@ const StudentList: React.FC = () => {
                 type: 'input',
                 placeholder: '请输入手机号',
             },
+            {
+                label:'任教科目',
+                name:'subject',
+                type:'select',
+                options:subjectList,
+                placeholder:'请选择任教科目',
+               },
             {
                 label:'状态',
                 name: 'status',
@@ -112,6 +89,15 @@ const StudentList: React.FC = () => {
             options:[{ label: '男', value: 1 }, { label: '女', value: 2}],
             placeholder:'请选择性别',
            },
+           {
+            label:'任教科目',
+            name:'subjects',
+            type:'select',
+            mode: 'multiple',
+            options:subjectList,
+            placeholder:'请选择任教科目',
+           },
+           
           
            {
             label:'状态',
@@ -151,6 +137,21 @@ const StudentList: React.FC = () => {
                 dict: 'gender',
                 
             },
+            {
+                title: '任教科目',
+                dataIndex: 'subjectsName',
+                key: 'subjectsName',
+                // dict: 'subject',
+                
+            },
+            // {
+            //     title: '是否是班主任',
+            //     dataIndex: 'isHeadTeacher',
+            //     key: 'isHeadTeacher',
+               
+            //     // dict: 'class',
+                
+            // },
             {
                 title: '状态',
                 dataIndex: 'status',
@@ -213,7 +214,7 @@ const StudentList: React.FC = () => {
     
     return (
         <PageComponent 
-        pageSchema={studentSchema}
+        pageSchema={pageSchema}
        
         getListApi={getTeacherList}
         deleteApi={(id: string) => deleteTeacher(Number(id))}
@@ -225,4 +226,4 @@ const StudentList: React.FC = () => {
 }
 
 
-export default StudentList
+export default TeacherList

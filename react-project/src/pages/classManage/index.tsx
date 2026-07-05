@@ -1,77 +1,40 @@
 import React from 'react';
 
-import { getStudentList, deleteStudent, uploadExcel, getExcel, addStudent, editStudent } from '@/api/student'
+import { 
+    getClassList,
+    addClass,
+    editClass,
+    deleteClass,
+    } from '@/api/class'
 import { useStudentClass } from '@/pages/student/hooks/useStudentClass'
 
 import './index.less'
-import dayjs from 'dayjs';
 
 import PageComponent from '@/components/PageComponent'
 
 
 
-interface SearchField {
-    label: string;
-    name: string;
-    type: string;
-    placeholder: string;
-    options?: any[];
-}
-
-
-interface StudentSchema {
-    searchFields: Array<SearchField>;
-    initSearchParams: Record<string, any>;
-    editFields:Array<Record<string, any>>;
-   
-    columns: Array<Record<string, any>>;
-    toolbar: {
-        add: boolean;
-        import: boolean;
-        export: boolean;
-        addPermission?: string;
-        importPermission?: string;
-        exportPermission?: string;
-    }
-}
-
-
-
-
-
-const StudentList: React.FC = () => {
+const ClassList: React.FC = () => {
 
 
     const classOptions = useStudentClass() || []
 
 
-    const studentSchema: StudentSchema = {
+    const pageSchema: PageSchema = {
         searchFields:[
             {
-                label: '姓名',
-                name: 'name',
+                label: '班级名称',
+                name: 'className',
                 type: 'input',
-                placeholder: '请输入姓名',
+                placeholder: '请输入班级名称',
             },
             {
-                label: '学号',
-                name: 'studentNo',
+                label: '班主任姓名',
+                name: 'headTeacherName',
                 type: 'input',
-                placeholder: '请输入学号',
+                placeholder: '请输入班主任姓名',
             },
-            {
-                label: '班级',
-                name: 'classId',
-                type: 'select',
-                placeholder: '请选择班级',
-                options: classOptions,
-            },
-            {
-                label: '出生年月',
-                name: 'birthDate',
-                type: 'RangePicker',
-                placeholder: '请选择出生年月',
-            },
+            
             
         ],
         initSearchParams : {
@@ -82,76 +45,91 @@ const StudentList: React.FC = () => {
         },
 
         editFields:[{
-             label:'姓名',
-             name:'name',
-             rules:[{ max: 5, message: '姓名最多5个字符' }],
+             label:'班级名称',
+             name:'className',
+             rules:[{ max: 5, message: '班级名称最多5个字符' }],
              type:'input',
             },
            {
-            label:'学号',
-            name:'studentNo',
-            rules:[{ max: 10, message: '学号最多10个字符' }],
-            type:'input',
-           },
-           {
-            label:'手机号',
-            name:'phone',
-            rules:[{ pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号' }],
-            type:'input',
-           },
-           {
-            label:'性别',
-            name:'gender',
+            label:'班主任',
+            name:'headTeacherId',
             type:'select',
-            options:[{ label: '男', value: '1' }, { label: '女', value: '2' }],
-            placeholder:'请选择性别',
+            options: [],
+            placeholder:'请选择班主任姓名',
            },
            {
-            label:'班级',
-            name:'classId',
+            label:'语文老师',
+            name:'chineseTeacherId',
             type:'select',
-            options: classOptions,
+            options: [],
+            placeholder:'请选择语文老师',
            },
            {
-            label:'出生年月',
-            name:'birthday',
-            type:'DatePicker',
-            placeholder:'请选择出生年月',
+            label:'数学老师',
+            name:'mathTeacherId',
+            type:'select',
+            options: [],
+            placeholder:'请选择数学老师',
+           },
+           {
+            label:'英语老师',
+            name:'englishTeacherId',
+            type:'select',
+            options: [],
+            placeholder:'请选择英语老师',
+           },
+           {
+            label:'状态',
+            name:'status',
+            type:'select',
+            options: [],
+            placeholder:'请选择状态',
+           },
+           {
+            label:'描述',
+            name:'description',
+            type:'textarea',
+            placeholder:'请输入描述',
            }
         ],
         columns : [
             {
-                title: '姓名',
-                dataIndex: 'name',
-                key: 'name',
+                title: '班级名称',
+                dataIndex: 'className',
+                key: 'className',
             },
             {
-                title: '学号',
-                dataIndex: 'studentNo',
-                key: 'studentNo',
+                title: '班主任姓名',
+                dataIndex: 'headTeacherName',
+                key: 'headTeacherName',
             },
             {
-                title: '手机号',
-                dataIndex: 'phone',
-                key: 'phone',
+                title: '语文老师',
+                dataIndex: 'chineseTeacherName',
+                key: 'chineseTeacherName',
             },
             {
-                title: '性别',
-                dataIndex: 'gender',
-                key: 'gender',
-                dict: 'gender',
+                title: '数学老师',
+                dataIndex: 'mathTeacherName',
+                key: 'mathTeacherName',
+               
                 
             },
             {
-                title: '班级',
-                dataIndex: 'className',
-                key: 'classId',
+                title: '英语老师',
+                dataIndex: 'englishTeacherName',
+                key: 'englishTeacherName',
     
             },
             {
-                title: '出生年月',
-                dataIndex: 'birthday',
-                key: 'birthday',
+                title: '状态',
+                dataIndex: 'status',
+                key: 'status',
+            },
+            {
+                title: '描述',
+                dataIndex: 'description',
+                key: 'description',
             },
             {
                 title: '创建时间',
@@ -176,12 +154,12 @@ const StudentList: React.FC = () => {
                     {
                       text: "编辑",
                       action: "edit",
-                      permission: "student:update"
+                      permission: "class:update"
                     },
                     {
                       text: "删除",
                       action: "delete",
-                      permission: "student:delete",
+                      permission: "class:delete",
                       danger: true
                     }
                   ]
@@ -192,10 +170,7 @@ const StudentList: React.FC = () => {
         toolbar: {
             add: true,
             addPermission: "student:add",
-            import: true,
-            importPermission: "student:upload",
-            export: true,
-            exportPermission: "student:export"
+          
           }
     }
 
@@ -205,17 +180,16 @@ const StudentList: React.FC = () => {
     
     return (
         <PageComponent 
-        pageSchema={studentSchema}
+        pageSchema={pageSchema}
        
-        getListApi={getStudentList}
-        deleteApi={(id: string) => deleteStudent(Number(id))}
-        exportApi={getExcel}
-        importApi={uploadExcel}
-        addApi={addStudent}
-        editApi={editStudent}
+        getListApi={getClassList}
+        deleteApi={(id: string) => deleteClass(Number(id))}
+        
+        addApi={addClass}
+        editApi={editClass}
         />
     )
 }
 
 
-export default StudentList
+export default ClassList
