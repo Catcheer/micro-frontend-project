@@ -8,5 +8,9 @@ export const dictMap = {
     "status": {
         "1": "在职",
         "2": "离职"
+    },
+    "classStatus": {
+        "1": "启用",
+        "0": "禁用"
     }
 }

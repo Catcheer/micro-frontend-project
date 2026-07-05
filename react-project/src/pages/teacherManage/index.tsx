@@ -41,7 +41,7 @@ const TeacherList: React.FC = () => {
             },
             {
                 label:'任教科目',
-                name:'subject',
+                name:'subjectId',
                 type:'select',
                 options:subjectList,
                 placeholder:'请选择任教科目',

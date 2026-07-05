@@ -6,7 +6,9 @@ import {
     editClass,
     deleteClass,
     } from '@/api/class'
-import { useStudentClass } from '@/pages/student/hooks/useStudentClass'
+// import { useStudentClass } from '@/pages/student/hooks/useStudentClass'
+
+import { useTeacherList } from '@/hooks/useTeacher'
 
 import './index.less'
 
@@ -17,7 +19,9 @@ import PageComponent from '@/components/PageComponent'
 const ClassList: React.FC = () => {
 
 
-    const classOptions = useStudentClass() || []
+    // const classOptions = useStudentClass() || []
+    const teachers = useTeacherList()
+    
 
 
     const pageSchema: PageSchema = {
@@ -28,12 +32,13 @@ const ClassList: React.FC = () => {
                 type: 'input',
                 placeholder: '请输入班级名称',
             },
-            {
-                label: '班主任姓名',
-                name: 'headTeacherName',
-                type: 'input',
-                placeholder: '请输入班主任姓名',
-            },
+
+            // {
+            //     label: '班主任姓名',
+            //     name: 'headTeacherName',
+            //     type: 'input',
+            //     placeholder: '请输入班主任姓名',
+            // },
             
             
         ],
@@ -50,39 +55,33 @@ const ClassList: React.FC = () => {
              rules:[{ max: 5, message: '班级名称最多5个字符' }],
              type:'input',
             },
-           {
-            label:'班主任',
-            name:'headTeacherId',
-            type:'select',
-            options: [],
-            placeholder:'请选择班主任姓名',
-           },
+          
            {
             label:'语文老师',
             name:'chineseTeacherId',
             type:'select',
-            options: [],
+            options: teachers.cheinese,
             placeholder:'请选择语文老师',
            },
            {
             label:'数学老师',
             name:'mathTeacherId',
             type:'select',
-            options: [],
+            options: teachers.math,
             placeholder:'请选择数学老师',
            },
            {
             label:'英语老师',
             name:'englishTeacherId',
             type:'select',
-            options: [],
+            options: teachers.english,
             placeholder:'请选择英语老师',
            },
            {
             label:'状态',
             name:'status',
             type:'select',
-            options: [],
+            options: [{ label: '启用', value: 1 }, { label: '禁用', value: 0 }],
             placeholder:'请选择状态',
            },
            {
@@ -98,11 +97,11 @@ const ClassList: React.FC = () => {
                 dataIndex: 'className',
                 key: 'className',
             },
-            {
-                title: '班主任姓名',
-                dataIndex: 'headTeacherName',
-                key: 'headTeacherName',
-            },
+            // {
+            //     title: '班主任姓名',
+            //     dataIndex: 'headTeacherName',
+            //     key: 'headTeacherName',
+            // },
             {
                 title: '语文老师',
                 dataIndex: 'chineseTeacherName',
@@ -125,6 +124,7 @@ const ClassList: React.FC = () => {
                 title: '状态',
                 dataIndex: 'status',
                 key: 'status',
+                dict: 'classStatus',
             },
             {
                 title: '描述',

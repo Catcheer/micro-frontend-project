@@ -2,6 +2,11 @@ import { get, post, del } from '@/utils/request.ts'
 
 
 
+export const allTeacherList = () => {
+    return get('/teacher/get').then(res => {
+        return res.data
+    })
+}
 
 
 export const getTeacherList = (data: PageParam) => {

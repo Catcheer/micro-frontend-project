@@ -3,6 +3,7 @@ import { router } from '@/routes/router'
 import { getLoginRedirectPath } from '@/utils/loginRedirect'
 import store from '@/store'
 import { clearAuth } from '@/store/authSlice'
+import { message } from 'antd'
 
 const service = axios.create({
     baseURL: '/api',
@@ -109,14 +110,24 @@ service.interceptors.response.use(
                 }
             }
         }
+        if(res.data.code === 400) {
+            message.error(res.data.message)
+            return Promise.reject(res.data.message)
+        }
 
         // 统一取 data
         return res.data
     },
     async error => {
+        debugger
         const originalConfig = error.config as RetryableConfig
         const status = error.response?.status
         const isRefreshRequest = originalConfig?.url?.includes('/user/refresh')
+
+        if (status === 403) {
+            return Promise.reject('没有权限')
+        }
+       
 
         if (status === 401 && !isRefreshRequest && !originalConfig?._retry) {
             originalConfig._retry = true
