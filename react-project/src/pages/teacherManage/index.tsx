@@ -204,7 +204,7 @@ const TeacherList: React.FC = () => {
 
         toolbar: {
             add: true,
-            addPermission: "student:add",
+            addPermission: "teacher:add",
           }
     }
 

@@ -49,13 +49,13 @@ export const router = createBrowserRouter([
 
       {
         path: "/classList",
-        // element: <ProtectedRoute permission="class:list"><ClassManage /></ProtectedRoute>,
-        element: <ClassManage />,
+        element: <ProtectedRoute permission="class:list"><ClassManage /></ProtectedRoute>,
+        // element: <ClassManage />,
       },
       {
         path: "/teacherList",
-        // element: <ProtectedRoute permission="teacher:list"><TeacherManage /></ProtectedRoute>,
-        element: <TeacherManage />,
+        element: <ProtectedRoute permission="teacher:list"><TeacherManage /></ProtectedRoute>,
+        // element: <TeacherManage />,
       },
       {
         path: "/studentList",

@@ -169,7 +169,7 @@ const ClassList: React.FC = () => {
 
         toolbar: {
             add: true,
-            addPermission: "student:add",
+            addPermission: "class:add",
           
           }
     }
