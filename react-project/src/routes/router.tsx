@@ -71,7 +71,8 @@ export const router = createBrowserRouter([
       },
       {
         path: "/permissionManage",
-        element: <ProtectedRoute permission="permission:list"><PermissionManage /></ProtectedRoute>,
+        // element: <ProtectedRoute permission="permission:list"><PermissionManage /></ProtectedRoute>,
+        element: <PermissionManage />,
       },
       {
         path: "/operationLog",
