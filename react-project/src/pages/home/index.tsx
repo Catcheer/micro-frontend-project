@@ -1,23 +1,118 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef ,useState} from "react";
 import { Card, Row, Col, Typography } from "antd";
 import * as echarts from "echarts";
 import { useSelector } from "react-redux";
 import { selectSetting } from "@/store/settingSlice.js";
+import { dashboardOverview, studentStatistics } from "@/api/dashboard";
 
 const { Title, Text } = Typography;
+
+interface OverviewData {
+  totalClasses: number;
+  totalStudents: number;
+  totalSubjects: number;
+  totalTeachers: number;
+}
+
+interface StudentStatisticsData {
+  classStudent: Array<{
+    className: string;
+    studentCount: number;
+  }>;
+  genderDistribution: Array<{
+    gender: string;
+    totalStudents: number;
+  }>;
+}
+
 
 function Home() {
   const chartRef1 = useRef<HTMLDivElement>(null);
   const chartRef2 = useRef<HTMLDivElement>(null);
+
+  let chart1= useRef<any>(null);
+  let chart2= useRef<any>(null);
+
+
+
   const { navTopHight } = useSelector(selectSetting);
 
+
+  const [overviewData, setOverviewData] = useState<OverviewData>({
+    totalClasses: 0,
+    totalStudents: 0,
+    totalSubjects: 0,
+    totalTeachers: 0,
+  });
+  const [studentStatisticsData, setStudentStatisticsData] = useState<StudentStatisticsData>({
+    classStudent: [],
+    genderDistribution: [],
+  });
+
+
+
   useEffect(() => {
-    const summaryData = [
-      { name: "总学生数", value: 1258, color: "#3366FF" },
-      { name: "本周签到率", value: 96.3, color: "#22C55E" },
-      { name: "在校班级", value: 24, color: "#F59E0B" },
-      { name: "待审批请假", value: 8, color: "#EC4899" },
-    ];
+    dashboardOverview().then(res => {
+      setOverviewData(res)
+    })
+    _studentStatistics()
+  }, [])
+
+
+  const _studentStatistics = () => {
+    studentStatistics().then(res => {
+      setStudentStatisticsData(res)
+      // setStudentStatisticsData(echartsData)
+    })
+  }
+
+
+  useEffect(() => {
+    const newData1 = {
+      xAxis: {
+        data: studentStatisticsData.classStudent.map(item => item.className),
+      },
+      series: [
+        {
+          data: studentStatisticsData.classStudent.map(item => item.studentCount),
+        }
+      ],
+    }
+
+    const newData2 = {
+      series: [
+        {
+          data: studentStatisticsData.genderDistribution.map(item => {
+            if(item.gender === '1'){
+              return {
+                value: item.totalStudents,
+                name: '男',
+              }
+            }else{
+              return {
+                value: item.totalStudents,
+                name: '女',
+              }
+            }
+          }),
+        }
+      ],
+    }
+    if (chart2?.current) {
+      chart2?.current.setOption(newData2)
+    }
+    if (chart1?.current) {
+     
+      chart1?.current.setOption(newData1)
+    }
+
+    
+      
+  }, [studentStatisticsData])
+
+
+  useEffect(() => {
+   
 
     const option1 = {
       title: {
@@ -28,7 +123,7 @@ function Home() {
       tooltip: { trigger: "axis" },
       xAxis: {
         type: "category",
-        data: ["一年级", "二年级", "三年级", "四年级", "五年级", "六年级"],
+        data: [],
         axisLine: { lineStyle: { color: "#999" } },
       },
       yAxis: {
@@ -39,7 +134,7 @@ function Home() {
         {
           name: "学生数",
           type: "bar",
-          data: [210, 185, 205, 195, 190, 173],
+          data: [],
           itemStyle: {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               { offset: 0, color: "#4F46E5" },
@@ -51,56 +146,58 @@ function Home() {
       ],
     };
 
+    //鼠标hover时 显示数值 和 百分比
+
     const option2 = {
       title: {
-        text: "月度缺勤趋势",
-        left: "left",
-        textStyle: { color: "#333", fontSize: 16 },
+        text: '学生按性别分布',
+      
+        left: 'center'
       },
-      tooltip: { trigger: "axis" },
-      xAxis: {
-        type: "category",
-        data: ["1月", "2月", "3月", "4月", "5月", "6月"],
-        axisLine: { lineStyle: { color: "#999" } },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
       },
-      yAxis: {
-        type: "value",
-        axisLine: { lineStyle: { color: "#999" } },
+      legend: {
+        orient: 'vertical',
+        left: 'left'
       },
       series: [
         {
-          name: "缺勤人次",
-          type: "line",
-          smooth: true,
-          data: [18, 24, 16, 12, 20, 15],
-          lineStyle: { color: "#EF4444" },
-          itemStyle: { color: "#EF4444" },
-        },
-      ],
+          name: '学生按性别分布',
+          type: 'pie',
+          radius: '60%',
+          data: [
+            { value: 1048, name: '男' },
+            { value: 735, name: '女' },
+            
+          ],
+         
+        }
+      ]
     };
 
-    let chart1: echarts.ECharts | null = null;
-    let chart2: echarts.ECharts | null = null;
+    
 
     if (chartRef1.current) {
-      chart1 = echarts.init(chartRef1.current);
-      chart1.setOption(option1);
+      chart1.current = echarts.init(chartRef1.current);
+      chart1.current?.setOption(option1);
     }
 
     if (chartRef2.current) {
-      chart2 = echarts.init(chartRef2.current);
-      chart2.setOption(option2);
+      chart2.current = echarts.init(chartRef2.current);
+      chart2.current.setOption(option2);
     }
 
     const handleResize = () => {
-      chart1?.resize();
-      chart2?.resize();
+      chart1?.current.resize();
+      chart2?.current.resize();
     };
     window.addEventListener("resize", handleResize);
 
     return () => {
-      chart1?.dispose();
-      chart2?.dispose();
+      chart1?.current.dispose();
+      chart2?.current.dispose();
       window.removeEventListener("resize", handleResize);
     };
   }, []);
@@ -113,25 +210,25 @@ function Home() {
         <Col span={6}>
           <Card>
             <Text type="secondary">总学生数</Text>
-            <div className="mt-4 text-3xl font-semibold">1,258</div>
+            <div className="mt-4 text-3xl font-semibold">{overviewData.totalStudents}</div>
           </Card>
         </Col>
         <Col span={6}>
           <Card>
-            <Text type="secondary">本周签到率</Text>
-            <div className="mt-4 text-3xl font-semibold">96.3%</div>
+            <Text type="secondary">总班级数</Text>
+            <div className="mt-4 text-3xl font-semibold">{overviewData.totalClasses}</div>
           </Card>
         </Col>
         <Col span={6}>
           <Card>
-            <Text type="secondary">在校班级</Text>
-            <div className="mt-4 text-3xl font-semibold">24</div>
+            <Text type="secondary">总教师数</Text>
+            <div className="mt-4 text-3xl font-semibold">{overviewData.totalTeachers}</div>
           </Card>
         </Col>
         <Col span={6}>
           <Card>
-            <Text type="secondary">待审批请假</Text>
-            <div className="mt-4 text-3xl font-semibold">8</div>
+            <Text type="secondary">总科目数</Text>
+            <div className="mt-4 text-3xl font-semibold">{overviewData.totalSubjects}</div>
           </Card>
         </Col>
       </Row>
@@ -143,7 +240,7 @@ function Home() {
           </Card>
         </Col>
         <Col span={12}>
-          <Card title="月度缺勤趋势" style={{ minHeight: 360 }}>
+          <Card title="学生按性别分布" style={{ minHeight: 360 }}>
             <div ref={chartRef2} style={{ width: "100%", height: 280 }} />
           </Card>
         </Col>
