@@ -30,11 +30,11 @@ interface ColumnType extends Record<string, any> {
 interface Props {
     pageSchema: any
     getListApi: (params: any) => Promise<any>
-    deleteApi: (id: string) => Promise<any>
+    deleteApi?: (id: string) => Promise<any>
     exportApi?: (params: any) => Promise<any>
     importApi?: (data: FormData) => Promise<any>
-    addApi: (data: any) => Promise<any>
-    editApi: ( data: any) => Promise<any>
+    addApi?: (data: any) => Promise<any>
+    editApi?: ( data: any) => Promise<any>
 }
 
 

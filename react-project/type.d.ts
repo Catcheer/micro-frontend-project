@@ -18,7 +18,7 @@ interface PageSchema {
     editFields:Array<Record<string, any>>;
    
     columns: Array<Record<string, any>>;
-    toolbar: {
+    toolbar?: {
         add: boolean;
         import?: boolean;
         export?: boolean;

@@ -18,7 +18,7 @@ interface SearchFormProps {
     handleAdd: () => void;
     handleImport: (options:any) => Promise<void>;
     handleExport: () => void;
-    toolbar: {
+    toolbar?: {
         add: boolean;
         import: boolean;
         export: boolean;
@@ -103,14 +103,14 @@ const SearchForm = ({ form,
             <div className='flex flex-wrap gap-3 justify-end'>
                 <Button type="primary" onClick={onSearch}>查询</Button>
                 <Button onClick={onReset}>重置</Button>
-                <PermissionButton permission={toolbar.addPermission || ''} onClick={onAdd}>新增</PermissionButton>
-                {toolbar.import &&   <Upload
+                {toolbar?.add &&   <PermissionButton permission={ toolbar?.addPermission || ''} onClick={onAdd}>新增</PermissionButton>}
+                {toolbar?.import &&   <Upload
                 showUploadList={false}
             customRequest={handleImport}
         >
-            <PermissionButton permission={toolbar.importPermission || ''} type="primary" onClick={onImport}>导入</PermissionButton>
+            <PermissionButton permission={toolbar?.importPermission || ''} type="primary" onClick={onImport}>导入</PermissionButton>
         </Upload>}
-                {toolbar.export && <PermissionButton permission={toolbar.exportPermission || ''} type="primary" onClick={onExport}>导出</PermissionButton>}
+                {toolbar?.export && <PermissionButton permission={toolbar?.exportPermission || ''} type="primary" onClick={onExport}>导出</PermissionButton>}
             </div>
         </Col>
     </Row>

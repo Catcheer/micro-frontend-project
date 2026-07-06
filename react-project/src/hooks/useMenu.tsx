@@ -75,6 +75,17 @@ const menuList = [
       }
     ]
   },
+  {
+    label: '操作日志',
+    key: '/operation',
+    icon: <FileOutlined />,
+    children: [
+      {
+        label: '操作日志',
+        key: '/operationLog',
+      }
+    ]
+  }
   // {
   //   label: '关于我们',
   //   key: '/about',

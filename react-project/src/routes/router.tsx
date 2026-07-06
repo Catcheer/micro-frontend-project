@@ -21,6 +21,7 @@ import RoleManage from '@/pages/sysManage/roleManage/index.tsx'
 import PermissionManage from '@/pages/sysManage/permissionManage/index.tsx'
 import ClassManage from '@/pages/classManage/index.tsx'
 import TeacherManage from '@/pages/teacherManage/index.tsx'
+import OperationLog from '@/pages/operationLog/index.tsx'
 
 import { ProtectedRoute } from '@/components/Permission'
 
@@ -72,7 +73,10 @@ export const router = createBrowserRouter([
         path: "/permissionManage",
         element: <ProtectedRoute permission="permission:list"><PermissionManage /></ProtectedRoute>,
       },
-      
+      {
+        path: "/operationLog",
+        element: <OperationLog />,
+      },
     ],
   },
 
