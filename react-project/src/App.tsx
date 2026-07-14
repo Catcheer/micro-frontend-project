@@ -91,7 +91,7 @@ const App: React.FC = () => {
   }
 
   const hideMenu = () => {
-    return current === '/login' || current === '/register'
+    return (current.indexOf('login')>-1) || current === '/register'
   }
 
   return (
