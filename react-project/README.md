@@ -17,6 +17,6 @@ Currently, two official plugins are available:
 
 
 ### 效果预览
-<a href="http://47.96.121.113:9006/app-react/login" >线上连接地址</a> 
+<a href="http://110.40.151.115:9006/app-react/login" >线上连接地址</a> 
 
 登录 登出 refreshtoken
